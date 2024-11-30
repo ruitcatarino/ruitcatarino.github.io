@@ -11,8 +11,11 @@ footnoteReturnLinkContents = "^"
 [Params.author]
   name = "Rui Catarino"
   abstract = """
-  I'm a software engineer working as a backend developer and a Python enthusiast.
+  A software engineer working as a backend developer and a Python enthusiast.
   """
+  github = "https://github.com/ruitcatarino/"
+  linkedin = "https://www.linkedin.com/in/ruitcatarino/"
+  medium = "https://medium.com/@ruitcatarino/"
 
 [taxonomies]
   category = "categories"
