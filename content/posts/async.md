@@ -13,15 +13,13 @@ In recent times, I faced a significant architectural challenge at work. Our larg
 
 This migration not only required a deep dive into asynchronous programming with Python but also gave me valuable hands-on experience with `asyncio`. In this post, I’ll walk you through how `asyncio` works and why it plays a pivotal role in building scalable, efficient applications.
 
-**What is Asynchronous Programming?**
-=====================================
+# What is Asynchronous Programming?
 
 Asynchronous programming allows a program to perform non-blocking I/O operations such as reading from a file, making a network request, or waiting for a message from a client without halting the execution of other tasks. This contrasts with synchronous programming, where each operation blocks the next one until it completes.
 
 Think of it like this: if a server is waiting for data from one client, it can simultaneously process messages from other clients without waiting idly.
 
-**A Quick Dive into Asyncio**
-=============================
+# A Quick Dive into Asyncio
 
 At its core, `asyncio` allows you to define asynchronous tasks using `async def` functions. These tasks are then scheduled and run on an event loop. Here's a breakdown of key concepts:
 
@@ -62,15 +60,13 @@ print(f"Execution time: {time.time() - start_time} seconds.")
 
 In this example, three `greet()` tasks are created and run concurrently. The event loop handles each task, and the program doesn’t block while waiting for one task to finish before starting the next. Instead, the tasks run in parallel, and the total execution time is just over 1 second.
 
-A Deeper Dive into Asyncio
-==========================
+# A Deeper Dive into Asyncio
 
 Now that we’ve seen the basics of defining and awaiting tasks, let’s explore more advanced features of `asyncio` that help you manage timeouts, cancel tasks, and synchronize concurrent operations.
 
 **Warning:** This section will be detailed and extensive, covering a wide range of features to help you master `asyncio`. Feel free to refer back to specific parts as needed!
 
-Task Management and Lifecycle
------------------------------
+## Task Management and Lifecycle
 
 In `asyncio`, tasks represent coroutines that have been scheduled to run in the event loop. We can create tasks using `asyncio.create_task()` and await them individually, as seen earlier. However, if you need to run several tasks concurrently, you can await them all at once using `asyncio.gather()`.
 
@@ -106,8 +102,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Task Timeouts
--------------
+## Task Timeouts
 
 Sometimes you need to enforce time limits on your tasks. `asyncio.wait_for()` is perfect for this. It allows you to set a timeout for a task, and if it doesn't finish in time, it raises a `TimeoutError`.
 
@@ -125,8 +120,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Task Cancellation
------------------
+## Task Cancellation
 
 `asyncio` also allows you to cancel tasks that are no longer needed. This is particularly useful when you want to stop a task before it finishes. To cancel a task, call the `cancel()` method, and handle the `CancelledError` exception.
 
@@ -150,8 +144,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Preventing Resource Conflicts
------------------------------
+## Preventing Resource Conflicts
 
 When multiple tasks need to access shared resources, you can use `asyncio.Lock()` to ensure that only one task can access the resource at a time. This helps avoid race conditions.
 
@@ -171,8 +164,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Managing Resource Conflicts
----------------------------
+## Managing Resource Conflicts
 
 Sometimes, you want to allow multiple tasks to access a resource, but with a limit. `asyncio.Semaphore` lets you control how many tasks can run concurrently.
 
@@ -190,8 +182,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Task Communication
-------------------
+## Task Communication
 
 Queues are great for coordinating work between producer and consumer tasks. `asyncio.Queue` provides thread-safe operations for adding and retrieving items.
 
@@ -219,8 +210,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Coordinating Tasks
-------------------
+## Coordinating Tasks
 
 `asyncio.Event` allows tasks to wait for a signal before continuing. This is helpful for coordinating between tasks.
 
@@ -240,8 +230,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Structured Concurrency
-----------------------
+## Structured Concurrency
 
 `asyncio.TaskGroup` simplifies managing multiple tasks, ensuring they complete or clean up together. It provides better error handling and automatic cancellation for tasks in the group.
 
@@ -261,8 +250,7 @@ asyncio.run(main())
 
 By combining these tools — locks, semaphores, queues, events, and task groups— you can build robust, scalable, and highly efficient asynchronous applications with `asyncio`.
 
-Conclusion
-==========
+# Conclusion
 
 Asynchronous programming with `asyncio` is a game-changer for building scalable systems.
 
@@ -270,11 +258,10 @@ I hope this post has clarified the inner workings of `asyncio` and showcased its
 
 Keep calm and `import this`.
 
-References
-==========
+#References
 
-[asyncio - Asynchronous I/O](https://docs.python.org/3/library/asyncio.html?source=post_page-----54f421c86db4--------------------------------)
+[asyncio - Asynchronous I/O](https://docs.python.org/3/library/asyncio.html)
 
-[Synchronization Primitives](https://docs.python.org/3/library/asyncio-sync.html?source=post_page-----54f421c86db4--------------------------------)
+[Synchronization Primitives](https://docs.python.org/3/library/asyncio-sync.html)
 
-[Coroutines and Tasks](https://docs.python.org/3/library/asyncio-task.html?source=post_page-----54f421c86db4--------------------------------)
+[Coroutines and Tasks](https://docs.python.org/3/library/asyncio-task.html)

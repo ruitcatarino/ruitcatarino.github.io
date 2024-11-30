@@ -10,8 +10,8 @@ tags = [
 
 When working with Python, you’ve likely come across concepts like classes and inheritance. But have you ever wondered how Python defines and creates classes themselves? That’s where metaclasses come into play.
 
-What is a Metaclass?
-====================
+
+# What is a Metaclass?
 
 A metaclass is a class responsible for creating other classes, just as a class is responsible for creating objects. In simpler terms, if an object is an instance of a class, then a class is an instance of a metaclass.
 
@@ -39,8 +39,7 @@ The `_type(name,bases,namespace)_` function takes three arguments when creating 
 
 `namespace`: A dictionary that holds attributes and methods for the class.
 
-Creating Custom Metaclasses
-===========================
+# Creating Custom Metaclasses
 
 To create a metaclass, you need to define a class that inherits from `type`. You can override three important methods:
 
@@ -74,8 +73,7 @@ obj = MyClass(1, key="value")
 
 You might be wondering what the difference between `__new__` and `__init__` is. In Python, `__new__` is a special method responsible for creating a new instance of a class, and returning it. On the other hand, `__init__` is called after the instance has been created and is used to initialize the instance’s attributes and set up its state. Essentially, `__new__` creates the instance, while `__init__` configures it.
 
-Additional Methods You Can Override in a Metaclass
---------------------------------------------------
+## Additional Methods You Can Override in a Metaclass
 
 Beyond `__new__`, `__init__`, and `__call__`, you can customize various other methods in a metaclass to gain further control over class behavior:
 
@@ -88,11 +86,9 @@ Beyond `__new__`, `__init__`, and `__call__`, you can customize various other me
 7.  `__instancecheck__(cls, instance)`: Modify how `isinstance()` behaves for classes created with the metaclass.
 8.  `__subclasscheck__(cls, subclass)`: Change how `issubclass()` operates for classes created with the metaclass.
 
-Practical Examples of Metaclass Usage
-=====================================
+# Practical Examples of Metaclass Usage
 
-Enforcing Class Attributes
---------------------------
+## Enforcing Class Attributes
 
 Metaclasses can be used to enforce that certain attributes or methods are defined in a class. Here’s an example that ensures every subclass of `Animal` has a `speak()` method:
 
@@ -113,8 +109,7 @@ class Cat(Animal):
 # Output: TypeError: Class Cat must implement a 'speak' method.
 ```
 
-Implementing the Singleton Pattern
-----------------------------------
+## Implementing the Singleton Pattern
 
 Metaclasses are excellent for implementing design patterns like the Singleton, where a class can only have one instance:
 
@@ -134,8 +129,7 @@ print(a is b)  # Output: True
 
 The metaclass `Singleton` overrides the `__call__` method to ensure that only one instance of the class is created. Even though we try to create two instances of `MyClass`, both `a` and `b` refer to the same instance.
 
-Metaclasses vs. Class Decorators
-================================
+# Metaclasses vs. Class Decorators
 
 While both metaclasses and class decorators can modify class behavior, they differ in important ways:
 
@@ -144,8 +138,7 @@ While both metaclasses and class decorators can modify class behavior, they diff
 
 Use metaclasses when you need fine-grained control over the class itself (e.g., enforcing certain rules, design patterns), and class decorators when you need simple modifications after the class is defined.
 
-Conclusion
-==========
+# Conclusion
 
 Metaclasses are a powerful feature in Python that allow you to control and customize the behavior of class creation. While they can seem complex at first, understanding their purpose — defining how classes themselves are constructed — opens up advanced patterns in object-oriented programming.
 
@@ -155,7 +148,6 @@ I hope this guide has deepened your understanding of Python.
 
 Keep calm and `import this`.
 
-References
-==========
+# References
 
 [Data model](https://docs.python.org/3/reference/datamodel.html)

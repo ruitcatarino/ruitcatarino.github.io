@@ -13,15 +13,13 @@ When working with Python, especially object-oriented programming (OOP), you’ll
 
 If you’re diving into OOP in Python and wondering how the language decides which method to invoke when dealing with complex class hierarchies, you’re in the right place. Let’s break down how Python’s MRO works, why it matters, and how you can inspect and control it.
 
-What is Method Resolution Order?
-================================
+# What is Method Resolution Order?
 
 In Python, the MRO defines the sequence in which classes are searched when looking for a method or attribute. This becomes especially important in cases involving multiple inheritance. The MRO ensures that method lookups follow a consistent and logical path, preventing issues like calling the wrong method or skipping over a method altogether.
 
 Python also provides a handy way to inspect the MRO of any class using the `.mro()` method, giving you a clear view of the order in which methods will be resolved.
 
-C3 Linearization
-================
+# C3 Linearization
 
 Since Python 2.3, the language uses the **C3 linearization algorithm** to compute the MRO for a class. In simple inheritance scenarios, this ordering can be intuitive, but as inheritance hierarchies grow complex, the MRO can become tricky to predict. Here’s an easy-to-understand example:
 
@@ -58,8 +56,7 @@ I.mro()
 
 To understand how this ordering is computed, let’s explore the C3 linearization algorithm.
 
-C3 Linearization Algorithm
-==========================
+# C3 Linearization Algorithm
 
 C3 linearization works by merging the MRO of parent classes in a way that ensures consistent order and avoids method conflicts. Here’s how the algorithm works:
 
@@ -112,8 +109,7 @@ L[I] = [I, F, C, G, A, H, B, D, E] + merge([obj], [obj], [obj])
 L[I] = [I, F, C, G, A, H, B, D, E, obj]
 ```
 
-Conclusion
-==========
+# Conclusion
 
 The Method Resolution Order (MRO) is a crucial part of Python’s object-oriented system, ensuring that methods are resolved in a consistent, predictable way, even when multiple inheritance is involved. By understanding the C3 linearization algorithm, you can confidently navigate and control method lookups in complex class hierarchies.
 
@@ -121,7 +117,6 @@ I hope this guide has deepened your understanding of Python.
 
 Keep calm and `import this`.
 
-References
-==========
+# References
 
 [The Python 2.3 Method Resolution Order](https://www.python.org/download/releases/2.3/mro/)
