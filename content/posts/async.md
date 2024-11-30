@@ -258,7 +258,7 @@ I hope this post has clarified the inner workings of `asyncio` and showcased its
 
 Keep calm and `import this`.
 
-#References
+# References
 
 [asyncio - Asynchronous I/O](https://docs.python.org/3/library/asyncio.html)
 
