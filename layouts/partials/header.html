@@ -21,16 +21,24 @@
         {{ else }}
           <h1>{{ with $title }}{{.}}{{ else }}<br/>{{ end }}</h1>
           {{ if .IsHome }}
-            <p class="author">{{ with .Site.Params.Author.name }}{{.}}{{ else }}<br/>{{ end }}</p>
-
-            {{ if .Site.Params.Author.abstract }}
-              <div class="abstract">
-                <h5>Abstract</h5>
-                <p>
-                  {{ .Site.Params.Author.abstract }}
-                </p>
-              </div>
-            {{ end }}
+            <p class="author">
+              {{ with .Site.Params.Author.name }}{{.}}
+              {{ else }}
+              <br/>
+              {{ end }}
+            </p>
+            <div class="abstract">
+              <p>
+                {{ .Site.Params.Author.abstract }}
+              </p>
+            </div>
+            <div class="socials">
+              <p>
+                <a href="{{ .Site.Params.Author.github }}" target="_blank">GitHub</a> 
+                <a href="{{ .Site.Params.Author.linkedin }}" target="_blank">LinkedIn</a> 
+                <a href="{{ .Site.Params.Author.medium }}" target="_blank">Medium</a> 
+              </p>
+            </div>
           {{ end }}
         {{ end }}
       </div>
