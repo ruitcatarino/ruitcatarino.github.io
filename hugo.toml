@@ -1,0 +1,30 @@
+baseURL = "https://ruitcatarino.github.io/"
+title = "PyVerse"
+languageCode = "en"
+DefaultContentLanguage = "en"
+enableInlineShortcodes = true
+footnoteReturnLinkContents = "^"
+
+[pagination]
+  pagerSize = 3
+
+[Params.author]
+  name = "Rui Catarino"
+  abstract = """
+  I'm a software engineer working as a backend developer and a Python enthusiast.
+  """
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  series = "series"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "paraiso-dark"
+
+[Params]
+  darkmode = true
