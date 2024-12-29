@@ -1,7 +1,7 @@
 +++
 author = "Rui Catarino"
 title = "Mastering Type Hinting in Python"
-date = "2024-12-09"
+date = "2024-12-29"
 tags = [
     "python",
     "typehinting",
