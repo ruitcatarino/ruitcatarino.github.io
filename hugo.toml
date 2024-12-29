@@ -11,7 +11,7 @@ footnoteReturnLinkContents = "^"
 [Params.author]
   name = "Rui Catarino"
   abstract = """
-  A software engineer working as a backend developer who love to code and register new knowledge.
+  A software engineer working as a backend developer who loves to code and learn new things.
   """
   github = "https://github.com/ruitcatarino/"
   linkedin = "https://www.linkedin.com/in/ruitcatarino/"
