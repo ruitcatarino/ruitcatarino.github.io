@@ -4,9 +4,7 @@ date = 2024-11-20
 
 [taxonomies]
 tags = [
-    "python",
-    "async",
-    "asyncio",
+    "python"
 ]
 +++
 

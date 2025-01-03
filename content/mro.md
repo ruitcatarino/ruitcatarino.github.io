@@ -5,7 +5,6 @@ date = 2024-09-21
 [taxonomies]
 tags = [
     "python",
-    "mro",
     "algorithms",
 ]
 +++

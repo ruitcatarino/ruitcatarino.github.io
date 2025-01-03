@@ -4,9 +4,7 @@ date = 2024-12-29
 
 [taxonomies]
 tags = [
-    "python",
-    "typehinting",
-    "types",
+    "python"
 ]
 +++
 
@@ -111,9 +109,7 @@ For asynchronous programming, the `collections.abc` module also includes counter
 
 Note: Avoid using `typing.Iterable`, `typing.Callable`, etc., as they are deprecated in favor of their `collections.abc` counterparts.
 
-> Functions – or other callable objects – can be annotated using collections.abc.Callable or deprecated typing.Callable.
-
-https://docs.python.org/3/library/typing.html#annotating-callable-objects
+> [Functions – or other callable objects – can be annotated using collections.abc.Callable or deprecated typing.Callable.](https://docs.python.org/3/library/typing.html#annotating-callable-objects)
 
 # Conclusion
 
