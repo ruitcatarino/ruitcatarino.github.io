@@ -1,7 +1,8 @@
 +++
-author = "Rui Catarino"
 title = "Understanding Python’s Method Resolution Order (MRO)"
-date = "2024-09-21"
+date = 2024-09-21
+
+[taxonomies]
 tags = [
     "python",
     "mro",

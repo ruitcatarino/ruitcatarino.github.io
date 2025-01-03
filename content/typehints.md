@@ -1,7 +1,8 @@
 +++
-author = "Rui Catarino"
 title = "Mastering Type Hinting in Python"
-date = "2024-12-29"
+date = 2024-12-29
+
+[taxonomies]
 tags = [
     "python",
     "typehinting",

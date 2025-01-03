@@ -1,7 +1,8 @@
 +++
-author = "Rui Catarino"
 title = "Asynchronous Python: Behind the Scenes with Asyncio"
-date = "2024-11-20"
+date = 2024-11-20
+
+[taxonomies]
 tags = [
     "python",
     "async",

@@ -1,7 +1,8 @@
 +++
-author = "Rui Catarino"
 title = "Metaclasses in Python: Mastering Class Creation and Customization"
-date = "2024-10-12"
+date = 2024-10-12
+
+[taxonomies]
 tags = [
     "python",
     "metaclass",
