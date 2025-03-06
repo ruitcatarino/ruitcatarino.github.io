@@ -1,6 +1,6 @@
 +++
 title = "TIL: Gunicorn's gthread Worker Timeout Doesn't Work as Expected"
-date = 2024-11-20
+date = 2025-03-06
 
 [taxonomies]
 tags = [
