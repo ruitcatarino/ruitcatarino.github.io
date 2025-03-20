@@ -96,6 +96,10 @@ name = "linkedin"
 url = "https://www.linkedin.com/in/ruitcatarino/"
 
 [[extra.profile.social]]
+name = "medium"
+url = "https://medium.com/@ruitcatarino/"
+
+[[extra.profile.social]]
 name = "rss"
 url = "$BASE_URL/atom.xml"
 
