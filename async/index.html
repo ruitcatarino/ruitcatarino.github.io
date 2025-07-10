@@ -1,0 +1,613 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Title -->
+  <title>
+    Asynchronous Python: Behind the Scenes with Asyncio - CodeMemoirs
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Asynchronous Python: Behind the Scenes with Asyncio" />
+  <meta name="author" content="ruitcatarino" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Asynchronous Python: Behind the Scenes with Asyncio" />
+  <meta property="og:site_name" content="CodeMemoirs" />
+  <meta property="og:description" content="Asynchronous Python: Behind the Scenes with Asyncio" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;async&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://ruitcatarino.github.io/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://ruitcatarino.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://ruitcatarino.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://ruitcatarino.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://ruitcatarino.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+  <!---->
+  
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom"
+    href="https://ruitcatarino.github.io/atom.xml"
+  />
+   
+  <!---->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;async&#x2F;" />
+
+  <!-- Head inject -->
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://ruitcatarino.github.io">CodeMemoirs</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ruitcatarino.github.io/tags"
+            >Tags</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg relative mx-auto min-h-[calc(100vh-9rem)] max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"
+    >
+      
+<article>
+  <!-- Page Start inject -->
+  
+
+  <header class="mb-16">
+    <h1 class="my-0! pb-2.5">Asynchronous Python: Behind the Scenes with Asyncio</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2024-11-20</time>
+  <span class="mx-1">&middot;</span>
+  <span>5min</span>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>ruitcatarino</span>
+  
+  <!-- Page Info inject -->
+  
+</div>
+
+  </header>
+
+  
+
+  <!-- TOC -->
+  <!---->
+<div class="block-bg mb-12 flex rounded-lg p-2 text-lg">
+  <details>
+    <summary class="cursor-pointer py-1 pl-4">
+      <span>Table of Contents</span>
+    </summary>
+    <div class="px-2">
+      <ul>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#what-is-asynchronous-programming"
+            >What is Asynchronous Programming?</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#a-quick-dive-into-asyncio"
+            >A Quick Dive into Asyncio</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#a-deeper-dive-into-asyncio"
+            >A Deeper Dive into Asyncio</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#task-management-and-lifecycle"
+                >Task Management and Lifecycle</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#task-timeouts"
+                >Task Timeouts</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#task-cancellation"
+                >Task Cancellation</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#preventing-resource-conflicts"
+                >Preventing Resource Conflicts</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#managing-resource-conflicts"
+                >Managing Resource Conflicts</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#task-communication"
+                >Task Communication</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#coordinating-tasks"
+                >Coordinating Tasks</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#structured-concurrency"
+                >Structured Concurrency</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#conclusion"
+            >Conclusion</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/async/#references"
+            >References</a
+          >
+          
+        </li>
+        
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!---->
+
+  <!-- Content -->
+  <section><p>In recent times, I faced a significant architectural challenge at work. Our large Django monolith was struggling to scale due to its synchronous nature, especially when handling WebSocket connections. To address this, I took on the task of migrating all the WebSocket and asynchronous functionality from Django to a more lightweight, asynchronous microservice built with FastAPI.</p>
+<p>This migration not only required a deep dive into asynchronous programming with Python but also gave me valuable hands-on experience with <code>asyncio</code>. In this post, I’ll walk you through how <code>asyncio</code> works and why it plays a pivotal role in building scalable, efficient applications.</p>
+<h1 id="what-is-asynchronous-programming">What is Asynchronous Programming?</h1>
+<p>Asynchronous programming allows a program to perform non-blocking I/O operations such as reading from a file, making a network request, or waiting for a message from a client without halting the execution of other tasks. This contrasts with synchronous programming, where each operation blocks the next one until it completes.</p>
+<p>Think of it like this: if a server is waiting for data from one client, it can simultaneously process messages from other clients without waiting idly.</p>
+<h1 id="a-quick-dive-into-asyncio">A Quick Dive into Asyncio</h1>
+<p>At its core, <code>asyncio</code> allows you to define asynchronous tasks using <code>async def</code> functions. These tasks are then scheduled and run on an event loop. Here's a breakdown of key concepts:</p>
+<ul>
+<li><strong>Event Loop</strong>: The heart of <code>asyncio</code>, which handles all the asynchronous operations. It runs tasks and schedules them in an efficient, non-blocking manner.</li>
+<li><strong>Coroutines</strong>: Functions defined with <code>async def</code>, which return an "awaitable" object when called. These are the building blocks of asynchronous code.</li>
+<li><strong>Tasks</strong>: Instances of coroutines that are scheduled to run in the event loop.</li>
+</ul>
+<p>Here’s an example of a basic <code>asyncio</code> program:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>time
+</span><span style="color:#b48ead;">import </span><span>asyncio
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">greet</span><span>(</span><span style="color:#bf616a;">name</span><span>):
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Hello, </span><span>{name}</span><span style="color:#a3be8c;">!</span><span>&quot;)
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">1</span><span>)  </span><span style="color:#65737e;"># Sleep for 1 second
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Goodbye, </span><span>{name}</span><span style="color:#a3be8c;">!</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    task1 = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">greet</span><span>(&quot;</span><span style="color:#a3be8c;">Rui</span><span>&quot;))
+</span><span>    task2 = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">greet</span><span>(&quot;</span><span style="color:#a3be8c;">Teixeira</span><span>&quot;))
+</span><span>    task3 = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">greet</span><span>(&quot;</span><span style="color:#a3be8c;">Catarino</span><span>&quot;))
+</span><span>    
+</span><span>    </span><span style="color:#65737e;"># Await all tasks to complete
+</span><span>    </span><span style="color:#b48ead;">await </span><span>task1
+</span><span>    </span><span style="color:#b48ead;">await </span><span>task2
+</span><span>    </span><span style="color:#b48ead;">await </span><span>task3
+</span><span>start_time = time.</span><span style="color:#bf616a;">time</span><span>()
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Execution time: </span><span>{time.</span><span style="color:#bf616a;">time</span><span>() - start_time}</span><span style="color:#a3be8c;"> seconds.</span><span>&quot;)
+</span><span style="color:#65737e;"># Output:
+</span><span style="color:#65737e;"># Hello, Rui!
+</span><span style="color:#65737e;"># Hello, Teixeira!
+</span><span style="color:#65737e;"># Hello, Catarino!
+</span><span style="color:#65737e;"># Goodbye, Rui!
+</span><span style="color:#65737e;"># Goodbye, Teixeira!
+</span><span style="color:#65737e;"># Goodbye, Catarino!
+</span><span style="color:#65737e;"># Execution time: 1.0026977062225342 seconds.
+</span></code></pre>
+<p>In this example, three <code>greet()</code> tasks are created and run concurrently. The event loop handles each task, and the program doesn’t block while waiting for one task to finish before starting the next. Instead, the tasks run in parallel, and the total execution time is just over 1 second.</p>
+<h1 id="a-deeper-dive-into-asyncio">A Deeper Dive into Asyncio</h1>
+<p>Now that we’ve seen the basics of defining and awaiting tasks, let’s explore more advanced features of <code>asyncio</code> that help you manage timeouts, cancel tasks, and synchronize concurrent operations.</p>
+<p><strong>Warning:</strong> This section will be detailed and extensive, covering a wide range of features to help you master <code>asyncio</code>. Feel free to refer back to specific parts as needed!</p>
+<h2 id="task-management-and-lifecycle">Task Management and Lifecycle</h2>
+<p>In <code>asyncio</code>, tasks represent coroutines that have been scheduled to run in the event loop. We can create tasks using <code>asyncio.create_task()</code> and await them individually, as seen earlier. However, if you need to run several tasks concurrently, you can await them all at once using <code>asyncio.gather()</code>.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>asyncio
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">greet</span><span>(</span><span style="color:#bf616a;">name</span><span>):
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>    </span><span style="color:#b48ead;">return f</span><span>&quot;</span><span style="color:#a3be8c;">Hello, </span><span>{name}</span><span style="color:#a3be8c;">!</span><span>&quot;
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    task1 = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">greet</span><span>(&quot;</span><span style="color:#a3be8c;">Rui</span><span>&quot;))
+</span><span>    task2 = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">greet</span><span>(&quot;</span><span style="color:#a3be8c;">Teixeira</span><span>&quot;))
+</span><span>    task3 = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">greet</span><span>(&quot;</span><span style="color:#a3be8c;">Catarino</span><span>&quot;))
+</span><span>    
+</span><span>    results = </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">gather</span><span>(task1, task2, task3)
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(results)
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<p>In this example, <code>asyncio.gather()</code> allows the tasks to run concurrently, and the results are collected once all tasks complete.</p>
+<p><strong>Handling Exceptions with</strong> <code>**return_exceptions**</code>: By default, if any task raises an exception, <code>asyncio.gather()</code> stops and raises that exception. However, if you set <code>return_exceptions=True</code>, exceptions are returned as part of the results, allowing the program to continue:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">faulty_task</span><span>():
+</span><span>    </span><span style="color:#b48ead;">raise </span><span style="color:#bf616a;">ValueError</span><span>(&quot;</span><span style="color:#a3be8c;">An error occurred!</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    results = </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">gather</span><span>(
+</span><span>        </span><span style="color:#bf616a;">greet</span><span>(&quot;</span><span style="color:#a3be8c;">Alice</span><span>&quot;),
+</span><span>        </span><span style="color:#bf616a;">faulty_task</span><span>(),
+</span><span>        </span><span style="color:#bf616a;">return_exceptions</span><span>=</span><span style="color:#d08770;">True
+</span><span>    )
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(results)  </span><span style="color:#65737e;"># Outputs: [&#39;Hello, Alice!&#39;, ValueError(&#39;An error occurred!&#39;)]
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<h2 id="task-timeouts">Task Timeouts</h2>
+<p>Sometimes you need to enforce time limits on your tasks. <code>asyncio.wait_for()</code> is perfect for this. It allows you to set a timeout for a task, and if it doesn't finish in time, it raises a <code>TimeoutError</code>.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>asyncio
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">long_task</span><span>():
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">3</span><span>)
+</span><span>    </span><span style="color:#b48ead;">return </span><span>&quot;</span><span style="color:#a3be8c;">Task completed</span><span>&quot;
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    </span><span style="color:#b48ead;">try</span><span>:
+</span><span>        result = </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">wait_for</span><span>(</span><span style="color:#bf616a;">long_task</span><span>(), </span><span style="color:#bf616a;">timeout</span><span>=</span><span style="color:#d08770;">2</span><span>)
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(result)
+</span><span>    </span><span style="color:#b48ead;">except </span><span>asyncio.TimeoutError:
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">The task took too long!</span><span>&quot;)
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<h2 id="task-cancellation">Task Cancellation</h2>
+<p><code>asyncio</code> also allows you to cancel tasks that are no longer needed. This is particularly useful when you want to stop a task before it finishes. To cancel a task, call the <code>cancel()</code> method, and handle the <code>CancelledError</code> exception.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>asyncio
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">task_to_cancel</span><span>():
+</span><span>    </span><span style="color:#b48ead;">try</span><span>:
+</span><span>        </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">5</span><span>)
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">Task completed</span><span>&quot;)
+</span><span>    </span><span style="color:#b48ead;">except </span><span>asyncio.CancelledError:
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">Task was cancelled</span><span>&quot;)
+</span><span>        </span><span style="color:#b48ead;">raise
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    task = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">task_to_cancel</span><span>())
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>    task.</span><span style="color:#bf616a;">cancel</span><span>()
+</span><span>    </span><span style="color:#b48ead;">try</span><span>:
+</span><span>        </span><span style="color:#b48ead;">await </span><span>task
+</span><span>    </span><span style="color:#b48ead;">except </span><span>asyncio.CancelledError:
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">Caught cancellation</span><span>&quot;)
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<h2 id="preventing-resource-conflicts">Preventing Resource Conflicts</h2>
+<p>When multiple tasks need to access shared resources, you can use <code>asyncio.Lock()</code> to ensure that only one task can access the resource at a time. This helps avoid race conditions.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>asyncio
+</span><span>lock = asyncio.</span><span style="color:#bf616a;">Lock</span><span>()
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">critical_section</span><span>(</span><span style="color:#bf616a;">name</span><span>):
+</span><span>    </span><span style="color:#b48ead;">async with </span><span>lock:
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;{name}</span><span style="color:#a3be8c;"> is in the critical section.</span><span>&quot;)
+</span><span>        </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;{name}</span><span style="color:#a3be8c;"> is leaving the critical section.</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">gather</span><span>(
+</span><span>        </span><span style="color:#bf616a;">critical_section</span><span>(&quot;</span><span style="color:#a3be8c;">Task 1</span><span>&quot;),
+</span><span>        </span><span style="color:#bf616a;">critical_section</span><span>(&quot;</span><span style="color:#a3be8c;">Task 2</span><span>&quot;),
+</span><span>    )
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<h2 id="managing-resource-conflicts">Managing Resource Conflicts</h2>
+<p>Sometimes, you want to allow multiple tasks to access a resource, but with a limit. <code>asyncio.Semaphore</code> lets you control how many tasks can run concurrently.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>asyncio
+</span><span>semaphore = asyncio.</span><span style="color:#bf616a;">Semaphore</span><span>(</span><span style="color:#d08770;">2</span><span>)  </span><span style="color:#65737e;"># Allow 2 tasks at a time
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">limited_task</span><span>(</span><span style="color:#bf616a;">name</span><span>):
+</span><span>    </span><span style="color:#b48ead;">async with </span><span>semaphore:
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;{name}</span><span style="color:#a3be8c;"> is working.</span><span>&quot;)
+</span><span>        </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;{name}</span><span style="color:#a3be8c;"> is done.</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    tasks = [</span><span style="color:#bf616a;">limited_task</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Task </span><span>{i}&quot;) </span><span style="color:#b48ead;">for </span><span>i </span><span style="color:#b48ead;">in </span><span style="color:#96b5b4;">range</span><span>(</span><span style="color:#d08770;">5</span><span>)]
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">gather</span><span>(*tasks)
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<h2 id="task-communication">Task Communication</h2>
+<p>Queues are great for coordinating work between producer and consumer tasks. <code>asyncio.Queue</code> provides thread-safe operations for adding and retrieving items.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>asyncio
+</span><span>queue = asyncio.</span><span style="color:#bf616a;">Queue</span><span>()
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">producer</span><span>():
+</span><span>    </span><span style="color:#b48ead;">for </span><span>i </span><span style="color:#b48ead;">in </span><span style="color:#96b5b4;">range</span><span>(</span><span style="color:#d08770;">5</span><span>):
+</span><span>        </span><span style="color:#b48ead;">await </span><span>queue.</span><span style="color:#bf616a;">put</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Item </span><span>{i}&quot;)
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Produced: Item </span><span>{i}&quot;)
+</span><span>        </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">0.5</span><span>)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">consumer</span><span>():
+</span><span>    </span><span style="color:#b48ead;">while </span><span style="color:#d08770;">True</span><span>:
+</span><span>        item = </span><span style="color:#b48ead;">await </span><span>queue.</span><span style="color:#bf616a;">get</span><span>()
+</span><span>        </span><span style="color:#b48ead;">if </span><span>item is </span><span style="color:#d08770;">None</span><span>:
+</span><span>            </span><span style="color:#b48ead;">break
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Consumed: </span><span>{item}&quot;)
+</span><span>        </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    prod_task = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">producer</span><span>())
+</span><span>    cons_task = asyncio.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">consumer</span><span>())
+</span><span>    </span><span style="color:#b48ead;">await </span><span>prod_task
+</span><span>    </span><span style="color:#b48ead;">await </span><span>queue.</span><span style="color:#bf616a;">put</span><span>(</span><span style="color:#d08770;">None</span><span>)  </span><span style="color:#65737e;"># Signal the consumer to stop
+</span><span>    </span><span style="color:#b48ead;">await </span><span>cons_task
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<h2 id="coordinating-tasks">Coordinating Tasks</h2>
+<p><code>asyncio.Event</code> allows tasks to wait for a signal before continuing. This is helpful for coordinating between tasks.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>asyncio
+</span><span>event = asyncio.</span><span style="color:#bf616a;">Event</span><span>()
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">waiter</span><span>():
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">Waiting for the event...</span><span>&quot;)
+</span><span>    </span><span style="color:#b48ead;">await </span><span>event.</span><span style="color:#bf616a;">wait</span><span>()
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">Event set! Proceeding.</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">setter</span><span>():
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">Setting the event in 2 seconds...</span><span>&quot;)
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">2</span><span>)
+</span><span>    event.</span><span style="color:#bf616a;">set</span><span>()
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">gather</span><span>(</span><span style="color:#bf616a;">waiter</span><span>(), </span><span style="color:#bf616a;">setter</span><span>())
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<h2 id="structured-concurrency">Structured Concurrency</h2>
+<p><code>asyncio.TaskGroup</code> simplifies managing multiple tasks, ensuring they complete or clean up together. It provides better error handling and automatic cancellation for tasks in the group.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>asyncio
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">task</span><span>(</span><span style="color:#bf616a;">name</span><span>, </span><span style="color:#bf616a;">delay</span><span>):
+</span><span>    </span><span style="color:#b48ead;">await </span><span>asyncio.</span><span style="color:#bf616a;">sleep</span><span>(delay)
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;{name}</span><span style="color:#a3be8c;"> completed!</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">main</span><span>():
+</span><span>    </span><span style="color:#b48ead;">async with </span><span>asyncio.</span><span style="color:#bf616a;">TaskGroup</span><span>() </span><span style="color:#b48ead;">as </span><span>tg:
+</span><span>        tg.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">task</span><span>(&quot;</span><span style="color:#a3be8c;">Task 1</span><span>&quot;, </span><span style="color:#d08770;">1</span><span>))
+</span><span>        tg.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">task</span><span>(&quot;</span><span style="color:#a3be8c;">Task 2</span><span>&quot;, </span><span style="color:#d08770;">2</span><span>))
+</span><span>        tg.</span><span style="color:#bf616a;">create_task</span><span>(</span><span style="color:#bf616a;">task</span><span>(&quot;</span><span style="color:#a3be8c;">Task 3</span><span>&quot;, </span><span style="color:#d08770;">3</span><span>))
+</span><span>    </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">All tasks completed!</span><span>&quot;)
+</span><span>asyncio.</span><span style="color:#bf616a;">run</span><span>(</span><span style="color:#bf616a;">main</span><span>())
+</span></code></pre>
+<p>By combining these tools — locks, semaphores, queues, events, and task groups— you can build robust, scalable, and highly efficient asynchronous applications with <code>asyncio</code>.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Asynchronous programming with <code>asyncio</code> is a game-changer for building scalable systems.</p>
+<p>I hope this post has clarified the inner workings of <code>asyncio</code> and showcased its ability to handle I/O-bound tasks effectively. Whether you're building a microservice or optimizing a project, mastering <code>asyncio</code> unlocks new possibilities for performance and scalability.</p>
+<p>Keep calm and <code>import this</code>.</p>
+<h1 id="references">References</h1>
+<p><a href="https://docs.python.org/3/library/asyncio.html">asyncio - Asynchronous I/O</a></p>
+<p><a href="https://docs.python.org/3/library/asyncio-sync.html">Synchronization Primitives</a></p>
+<p><a href="https://docs.python.org/3/library/asyncio-task.html">Coroutines and Tasks</a></p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ruitcatarino.github.io/tags/python/"
+      >python</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;metaclass&#x2F;"
+    ><span class="mr-1.5">←</span><span>Metaclasses in Python: Mastering Class Creation and Customization</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;typehints&#x2F;"
+    ><span>Mastering Type Hinting in Python</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+
+  <!-- Page End inject -->
+  
+</article>
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://ruitcatarino.github.io">
+      ruitcatarino
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

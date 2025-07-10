@@ -1,0 +1,481 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Title -->
+  <title>
+    Mastering Type Hinting in Python - CodeMemoirs
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Mastering Type Hinting in Python" />
+  <meta name="author" content="ruitcatarino" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Mastering Type Hinting in Python" />
+  <meta property="og:site_name" content="CodeMemoirs" />
+  <meta property="og:description" content="Mastering Type Hinting in Python" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;typehints&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://ruitcatarino.github.io/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://ruitcatarino.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://ruitcatarino.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://ruitcatarino.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://ruitcatarino.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+  <!---->
+  
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom"
+    href="https://ruitcatarino.github.io/atom.xml"
+  />
+   
+  <!---->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;typehints&#x2F;" />
+
+  <!-- Head inject -->
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://ruitcatarino.github.io">CodeMemoirs</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ruitcatarino.github.io/tags"
+            >Tags</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg relative mx-auto min-h-[calc(100vh-9rem)] max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"
+    >
+      
+<article>
+  <!-- Page Start inject -->
+  
+
+  <header class="mb-16">
+    <h1 class="my-0! pb-2.5">Mastering Type Hinting in Python</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2024-12-29</time>
+  <span class="mx-1">&middot;</span>
+  <span>3min</span>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>ruitcatarino</span>
+  
+  <!-- Page Info inject -->
+  
+</div>
+
+  </header>
+
+  
+
+  <!-- TOC -->
+  <!---->
+<div class="block-bg mb-12 flex rounded-lg p-2 text-lg">
+  <details>
+    <summary class="cursor-pointer py-1 pl-4">
+      <span>Table of Contents</span>
+    </summary>
+    <div class="px-2">
+      <ul>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#what-is-type-hinting"
+            >What is Type Hinting?</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#why-use-type-hinting"
+            >Why Use Type Hinting?</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#basics-of-type-hinting"
+            >Basics of Type Hinting</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#functions"
+                >Functions</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#variables"
+                >Variables</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#advanced-type-hinting"
+            >Advanced Type Hinting</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#unions-and-optional-arguments"
+                >Unions and Optional Arguments</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#new-types"
+                >New Types</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#using-abcs-from-collections-abc"
+                >Using ABCs from collections.abc</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#conclusion"
+            >Conclusion</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/typehints/#references"
+            >References</a
+          >
+          
+        </li>
+        
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!---->
+
+  <!-- Content -->
+  <section><p>Type hinting, introduced in Python 3.5 with <a href="https://peps.python.org/pep-0484/">PEP 484</a>, makes code clearer, less error-prone, and easier to maintain. It’s not just about neatness, it helps catch bugs early and makes life easier for you and your team. In this post, I’ll cover the basics, benefits, and advanced tips to help you get the most out of type hints.</p>
+<h1 id="what-is-type-hinting">What is Type Hinting?</h1>
+<p>Type hinting allows you to annotate Python code with expected data types for variables, function arguments, and return values. This improves readability and helps tools like <code>mypy</code> catch errors before the code runs. For example:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">greet</span><span>(</span><span style="color:#bf616a;">name</span><span>: str) -&gt; str:
+</span><span>    </span><span style="color:#b48ead;">return f</span><span>&quot;</span><span style="color:#a3be8c;">Hello, </span><span>{name}</span><span style="color:#a3be8c;">!</span><span>&quot;
+</span></code></pre>
+<p>Here, <code>name</code> is a string, and the function returns a string. Simple, right?</p>
+<h1 id="why-use-type-hinting">Why Use Type Hinting?</h1>
+<p>Type hints make your code self-explanatory, help avoid mistakes, and enable smarter autocompletion in IDEs. They don’t change how Python runs your code but make it easier to work with, especially in large or collaborative projects.</p>
+<h1 id="basics-of-type-hinting">Basics of Type Hinting</h1>
+<p>You can annotate function arguments, return types, and variables using the <code>typing</code> module.</p>
+<h2 id="functions">Functions</h2>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">add</span><span>(</span><span style="color:#bf616a;">a</span><span>: int, </span><span style="color:#bf616a;">b</span><span>: int) -&gt; int:
+</span><span>    </span><span style="color:#b48ead;">return </span><span>a + b
+</span></code></pre>
+<p>This means <code>a</code> and <code>b</code> are integers, and the function returns an integer.</p>
+<h2 id="variables">Variables</h2>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span>x: int = </span><span style="color:#d08770;">10
+</span><span>y: str = &quot;</span><span style="color:#a3be8c;">Python</span><span>&quot;
+</span><span>names: list[str] = [&quot;</span><span style="color:#a3be8c;">Alice</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">Bob</span><span>&quot;]
+</span><span>scores: dict[str, int] = {&quot;</span><span style="color:#a3be8c;">Alice</span><span>&quot;: </span><span style="color:#d08770;">90</span><span>, &quot;</span><span style="color:#a3be8c;">Bob</span><span>&quot;: </span><span style="color:#d08770;">85</span><span>}
+</span></code></pre>
+<p>This tells readers and tools what types these variables are.</p>
+<h1 id="advanced-type-hinting">Advanced Type Hinting</h1>
+<h2 id="unions-and-optional-arguments">Unions and Optional Arguments</h2>
+<p>For more complex scenarios where multiple types are valid you can use the <code>|</code> operator:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">add</span><span>(</span><span style="color:#bf616a;">a</span><span>: int | float, </span><span style="color:#bf616a;">b</span><span>: int | float, </span><span style="color:#bf616a;">c</span><span>: int | float | </span><span style="color:#d08770;">None</span><span>) -&gt; int | float:
+</span><span>    result = a + b
+</span><span>    </span><span style="color:#b48ead;">if </span><span>c is not </span><span style="color:#d08770;">None</span><span>:
+</span><span>        result += c
+</span><span>    </span><span style="color:#b48ead;">return </span><span>result
+</span></code></pre>
+<p>This means <code>a</code> and <code>b</code> can be either <code>int</code> or <code>float</code> and <code>c</code> can be either <code>int</code>, <code>float</code>, or <code>None</code>.</p>
+<h2 id="new-types">New Types</h2>
+<p>You can also use <code>NewType</code> to define custom types:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">from </span><span>typing </span><span style="color:#b48ead;">import </span><span>NewType
+</span><span>
+</span><span>Point = </span><span style="color:#bf616a;">NewType</span><span>(&quot;</span><span style="color:#a3be8c;">Point</span><span>&quot;, tuple[int, int])
+</span><span>
+</span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">sum_points</span><span>(</span><span style="color:#bf616a;">p1</span><span>: Point, </span><span style="color:#bf616a;">p2</span><span>: Point) -&gt; Point:
+</span><span>    x1, y1 = p1
+</span><span>    x2, y2 = p2
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">Point</span><span>((x1 + x2, y1 + y2))
+</span></code></pre>
+<p>This creates a custom type called <code>Point</code> that is a tuple of two integers.</p>
+<h2 id="using-abcs-from-collections-abc">Using ABCs from <code>collections.abc</code></h2>
+<p>The <code>collections.abc</code> module provides abstract base classes (ABCs) for common container types, enabling generic programming with consistent interfaces.</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">from </span><span>collections.abc </span><span style="color:#b48ead;">import </span><span>Iterable, Callable, Generator
+</span><span>
+</span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">process</span><span>(</span><span style="color:#bf616a;">iterable</span><span>: Iterable[int]) -&gt; </span><span style="color:#d08770;">None</span><span>:
+</span><span>    </span><span style="color:#b48ead;">for </span><span>item </span><span style="color:#b48ead;">in </span><span>iterable:
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(item)
+</span><span>
+</span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">apply</span><span>(</span><span style="color:#bf616a;">function</span><span>: Callable[[int], int]) -&gt; </span><span style="color:#d08770;">None</span><span>:
+</span><span>    </span><span style="color:#b48ead;">for </span><span>i </span><span style="color:#b48ead;">in </span><span style="color:#96b5b4;">range</span><span>(</span><span style="color:#96b5b4;">len</span><span>(sequence)):
+</span><span>        sequence[i] = </span><span style="color:#bf616a;">function</span><span>(sequence[i])
+</span><span>
+</span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">generate</span><span>() -&gt; Generator[int, </span><span style="color:#d08770;">None</span><span>, </span><span style="color:#d08770;">None</span><span>]:
+</span><span>    </span><span style="color:#b48ead;">for </span><span>i </span><span style="color:#b48ead;">in </span><span style="color:#96b5b4;">range</span><span>(</span><span style="color:#d08770;">10</span><span>):
+</span><span>        </span><span style="color:#b48ead;">yield </span><span>i
+</span></code></pre>
+<p>The <code>Generator[int, None, None]</code> type annotation specifies a generator that yields integers (<code>int</code>), does not accept any values to its <code>send()</code> method (<code>None</code>), and does not return a value upon completion (<code>None</code>).</p>
+<p>Similarly, <code>Callable[[int], int]</code> represents a callable (like a function) that takes a single integer as an argument (<code>int</code>) and returns an integer (<code>int</code>).</p>
+<p>For asynchronous programming, the <code>collections.abc</code> module also includes counterparts such as <code>Coroutine</code>, <code>AsyncGenerator</code> and <code>Awaitable</code>.</p>
+<p>Note: Avoid using <code>typing.Iterable</code>, <code>typing.Callable</code>, etc., as they are deprecated in favor of their <code>collections.abc</code> counterparts.</p>
+<blockquote>
+<p><a href="https://docs.python.org/3/library/typing.html#annotating-callable-objects">Functions – or other callable objects – can be annotated using collections.abc.Callable or deprecated typing.Callable.</a></p>
+</blockquote>
+<h1 id="conclusion">Conclusion</h1>
+<p>Type hinting is a powerful tool that improves code clarity, catches potential bugs early, and makes your codebase more maintainable. While it may seem like extra work at first, the long-term benefits, especially in larger or collaborative projects, are undeniable. By mastering the basics and exploring advanced techniques, you can write Python code that is not only functional but also robust and self-documenting.</p>
+<p>Keep calm and <code>import this</code>.</p>
+<h1 id="references">References</h1>
+<p><a href="https://docs.python.org/3/library/typing.html">Support for type hints</a></p>
+<p><a href="https://docs.python.org/3/library/collections.abc.html">Abstract Base Classes for Containers</a></p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ruitcatarino.github.io/tags/python/"
+      >python</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;async&#x2F;"
+    ><span class="mr-1.5">←</span><span>Asynchronous Python: Behind the Scenes with Asyncio</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;minimal-asgi&#x2F;"
+    ><span>Building a Minimal ASGI Web Framework in Python</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+
+  <!-- Page End inject -->
+  
+</article>
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://ruitcatarino.github.io">
+      ruitcatarino
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

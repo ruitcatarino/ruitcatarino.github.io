@@ -1,0 +1,541 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Title -->
+  <title>
+    Building a Minimal ASGI Web Framework in Python - CodeMemoirs
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Building a Minimal ASGI Web Framework in Python" />
+  <meta name="author" content="ruitcatarino" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Building a Minimal ASGI Web Framework in Python" />
+  <meta property="og:site_name" content="CodeMemoirs" />
+  <meta property="og:description" content="Building a Minimal ASGI Web Framework in Python" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;minimal-asgi&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://ruitcatarino.github.io/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://ruitcatarino.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://ruitcatarino.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://ruitcatarino.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://ruitcatarino.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+  <!---->
+  
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom"
+    href="https://ruitcatarino.github.io/atom.xml"
+  />
+   
+  <!---->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;minimal-asgi&#x2F;" />
+
+  <!-- Head inject -->
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://ruitcatarino.github.io">CodeMemoirs</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ruitcatarino.github.io/tags"
+            >Tags</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg relative mx-auto min-h-[calc(100vh-9rem)] max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"
+    >
+      
+<article>
+  <!-- Page Start inject -->
+  
+
+  <header class="mb-16">
+    <h1 class="my-0! pb-2.5">Building a Minimal ASGI Web Framework in Python</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2025-01-05</time>
+  <span class="mx-1">&middot;</span>
+  <span>2min</span>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>ruitcatarino</span>
+  
+  <!-- Page Info inject -->
+  
+</div>
+
+  </header>
+
+  
+
+  <!-- TOC -->
+  <!---->
+<div class="block-bg mb-12 flex rounded-lg p-2 text-lg">
+  <details>
+    <summary class="cursor-pointer py-1 pl-4">
+      <span>Table of Contents</span>
+    </summary>
+    <div class="px-2">
+      <ul>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#understanding-asgi"
+            >Understanding ASGI</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#creating-the-core-framework"
+            >Creating the Core Framework</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#defining-request-and-response-classes"
+                >Defining Request and Response Classes</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#adding-routing"
+                >Adding Routing</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#running-the-application"
+            >Running the Application</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#define-a-simple-asgi-app-using-the-framework"
+                >Define a Simple ASGI App Using the Framework</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#running-the-server-locally"
+                >Running the Server Locally</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#deploying-to-production"
+                >Deploying to Production</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#handling-json-requests-and-responses"
+            >Handling JSON Requests and Responses</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#conclusion"
+            >Conclusion</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/minimal-asgi/#references"
+            >References</a
+          >
+          
+        </li>
+        
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!---->
+
+  <!-- Content -->
+  <section><p>ASGI (Asynchronous Server Gateway Interface) is the modern standard for asynchronous Python web applications, extending WSGI to support WebSockets, long-lived connections, and background tasks.</p>
+<p>This post walks through building a minimal ASGI web framework from scratch for educational purposes, designed to help you understand how web frameworks work under the hood.</p>
+<h1 id="understanding-asgi">Understanding ASGI</h1>
+<p>ASGI applications are Python callables that accept three arguments:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">app</span><span>(</span><span style="color:#bf616a;">scope</span><span>, </span><span style="color:#bf616a;">receive</span><span>, </span><span style="color:#bf616a;">send</span><span>):
+</span><span>    </span><span style="color:#d08770;">...
+</span></code></pre>
+<ul>
+<li><strong>scope</strong>: Connection information (type, path, headers).</li>
+<li><strong>receive</strong>: Async function to receive events (for WebSockets or HTTP requests).</li>
+<li><strong>send</strong>: Async function to send responses.</li>
+</ul>
+<h1 id="creating-the-core-framework">Creating the Core Framework</h1>
+<p>A minimal ASGI framework needs:</p>
+<ul>
+<li><strong>Routing</strong> to match incoming requests to handlers.</li>
+<li><strong>Request &amp; Response abstraction</strong> for easier handling.</li>
+</ul>
+<h2 id="defining-request-and-response-classes">Defining Request and Response Classes</h2>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">from </span><span>urllib.parse </span><span style="color:#b48ead;">import </span><span>parse_qs
+</span><span>
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Request</span><span style="color:#eff1f5;">:
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__init__</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">scope</span><span>, </span><span style="color:#bf616a;">receive</span><span>):
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.scope = scope
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.receive = receive
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.method = scope[&quot;</span><span style="color:#a3be8c;">method</span><span>&quot;]
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.path = scope[&quot;</span><span style="color:#a3be8c;">path</span><span>&quot;]
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.query_params = </span><span style="color:#bf616a;">parse_qs</span><span>(scope.</span><span style="color:#bf616a;">get</span><span>(&quot;</span><span style="color:#a3be8c;">query_string</span><span>&quot;, </span><span style="color:#b48ead;">b</span><span>&quot;&quot;).</span><span style="color:#bf616a;">decode</span><span>())
+</span><span>
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Response</span><span style="color:#eff1f5;">:
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__init__</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">body</span><span>, </span><span style="color:#bf616a;">status</span><span>=</span><span style="color:#d08770;">200</span><span>, </span><span style="color:#bf616a;">headers</span><span>=</span><span style="color:#d08770;">None</span><span>):
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.body = body.</span><span style="color:#bf616a;">encode</span><span>(&quot;</span><span style="color:#a3be8c;">utf-8</span><span>&quot;)
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.status = status
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.headers = headers or [(&quot;</span><span style="color:#a3be8c;">content-type</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">text/plain</span><span>&quot;)]
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">send</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">send</span><span>):
+</span><span>        </span><span style="color:#b48ead;">await </span><span style="color:#bf616a;">send</span><span>({
+</span><span>            &quot;</span><span style="color:#a3be8c;">type</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">http.response.start</span><span>&quot;,
+</span><span>            &quot;</span><span style="color:#a3be8c;">status</span><span>&quot;: </span><span style="color:#bf616a;">self</span><span>.status,
+</span><span>            &quot;</span><span style="color:#a3be8c;">headers</span><span>&quot;: [(k.</span><span style="color:#bf616a;">encode</span><span>(), v.</span><span style="color:#bf616a;">encode</span><span>()) </span><span style="color:#b48ead;">for </span><span>k, v </span><span style="color:#b48ead;">in </span><span style="color:#bf616a;">self</span><span>.headers],
+</span><span>        })
+</span><span>        </span><span style="color:#b48ead;">await </span><span style="color:#bf616a;">send</span><span>({
+</span><span>            &quot;</span><span style="color:#a3be8c;">type</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">http.response.body</span><span>&quot;,
+</span><span>            &quot;</span><span style="color:#a3be8c;">body</span><span>&quot;: </span><span style="color:#bf616a;">self</span><span>.body,
+</span><span>        })
+</span></code></pre>
+<h2 id="adding-routing">Adding Routing</h2>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">App</span><span style="color:#eff1f5;">:
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__init__</span><span>(</span><span style="color:#bf616a;">self</span><span>):
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.routes = {}
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">route</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">path</span><span>):
+</span><span>        </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">wrapper</span><span>(</span><span style="color:#bf616a;">handler</span><span>):
+</span><span>            </span><span style="color:#bf616a;">self</span><span>.routes[path] = handler
+</span><span>            </span><span style="color:#b48ead;">return </span><span>handler
+</span><span>        </span><span style="color:#b48ead;">return </span><span>wrapper
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">async def </span><span style="color:#96b5b4;">__call__</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">scope</span><span>, </span><span style="color:#bf616a;">receive</span><span>, </span><span style="color:#bf616a;">send</span><span>):
+</span><span>        </span><span style="color:#b48ead;">if </span><span>scope[&quot;</span><span style="color:#a3be8c;">type</span><span>&quot;] != &quot;</span><span style="color:#a3be8c;">http</span><span>&quot;:
+</span><span>            </span><span style="color:#b48ead;">return
+</span><span>
+</span><span>        request = </span><span style="color:#bf616a;">Request</span><span>(scope, receive)
+</span><span>        handler = </span><span style="color:#bf616a;">self</span><span>.routes.</span><span style="color:#bf616a;">get</span><span>(request.path)
+</span><span>        
+</span><span>        </span><span style="color:#b48ead;">if </span><span>handler:
+</span><span>            response = </span><span style="color:#b48ead;">await </span><span style="color:#bf616a;">handler</span><span>(request)
+</span><span>        </span><span style="color:#b48ead;">else</span><span>:
+</span><span>            response = </span><span style="color:#bf616a;">Response</span><span>(&quot;</span><span style="color:#a3be8c;">Not Found</span><span>&quot;, </span><span style="color:#bf616a;">status</span><span>=</span><span style="color:#d08770;">404</span><span>)
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">await </span><span>response.</span><span style="color:#bf616a;">send</span><span>(send)
+</span></code></pre>
+<h1 id="running-the-application">Running the Application</h1>
+<h2 id="define-a-simple-asgi-app-using-the-framework">Define a Simple ASGI App Using the Framework</h2>
+<p>Once the framework is set up, create an instance of <code>App</code> and define some routes:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span>app = </span><span style="color:#bf616a;">App</span><span>()
+</span><span>
+</span><span>@app.</span><span style="color:#bf616a;">route</span><span>(&quot;</span><span style="color:#a3be8c;">/</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">homepage</span><span>(</span><span style="color:#bf616a;">request</span><span>):
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">Response</span><span>(&quot;</span><span style="color:#a3be8c;">Hello, ASGI!</span><span>&quot;)
+</span><span>
+</span><span>@app.</span><span style="color:#bf616a;">route</span><span>(&quot;</span><span style="color:#a3be8c;">/echo</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">echo</span><span>(</span><span style="color:#bf616a;">request</span><span>):
+</span><span>    message = request.query_params.</span><span style="color:#bf616a;">get</span><span>(&quot;</span><span style="color:#a3be8c;">message</span><span>&quot;, [&quot;&quot;])[</span><span style="color:#d08770;">0</span><span>]
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">Response</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">You said: </span><span>{message}&quot;)
+</span></code></pre>
+<h2 id="running-the-server-locally">Running the Server Locally</h2>
+<p>To start the ASGI application locally, use <strong>Uvicorn</strong>, a high-performance ASGI server:</p>
+<p>First, install Uvicorn if you haven't:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">pip</span><span> install uvicorn
+</span></code></pre>
+<p>Then, run the server:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">uvicorn</span><span> myapp:app</span><span style="color:#bf616a;"> --host</span><span> 127.0.0.1</span><span style="color:#bf616a;"> --port</span><span> 8000
+</span></code></pre>
+<p>You can test it in a browser or with <code>curl</code>:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">curl</span><span> http://127.0.0.1:8000/
+</span><span style="color:#bf616a;">curl</span><span> http://127.0.0.1:8000/echo?message=Hello
+</span></code></pre>
+<h2 id="deploying-to-production">Deploying to Production</h2>
+<p>For production, use <strong>Uvicorn with multiple workers</strong> behind a process manager like <code>systemd</code> or a reverse proxy like <code>nginx</code>:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">uvicorn</span><span> myapp:app</span><span style="color:#bf616a;"> --host</span><span> 0.0.0.0</span><span style="color:#bf616a;"> --port</span><span> 8000</span><span style="color:#bf616a;"> --workers</span><span> 4
+</span></code></pre>
+<p>Alternatively, use <strong>Daphne</strong>:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">pip</span><span> install daphne
+</span><span style="color:#bf616a;">daphne -b</span><span> 0.0.0.0</span><span style="color:#bf616a;"> -p</span><span> 8000 myapp:app
+</span></code></pre>
+<h3 id="note-on-kubernetes-docker-swarm-and-load-balancers">Note on Kubernetes, Docker Swarm, and Load Balancers</h3>
+<p>If deploying in <strong>Kubernetes</strong>, <strong>Docker Swarm</strong>, or behind a <strong>load balancer</strong>, the general best practice is to run <strong>only one worker per container or pod</strong>. The load balancer distributes traffic across multiple instances, making additional workers inside a single container unnecessary and potentially counterproductive.</p>
+<h1 id="handling-json-requests-and-responses">Handling JSON Requests and Responses</h1>
+<p>Extend <code>Response</code> to handle JSON:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">import </span><span>json
+</span><span>
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">JSONResponse</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">Response</span><span style="color:#eff1f5;">):
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__init__</span><span>(</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">data</span><span>, </span><span style="color:#bf616a;">status</span><span>=</span><span style="color:#d08770;">200</span><span>, </span><span style="color:#bf616a;">headers</span><span>=</span><span style="color:#d08770;">None</span><span>):
+</span><span>        body = json.</span><span style="color:#bf616a;">dumps</span><span>(data)
+</span><span>        headers = headers or [(&quot;</span><span style="color:#a3be8c;">content-type</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">application/json</span><span>&quot;)]
+</span><span>        </span><span style="color:#96b5b4;">super</span><span>().</span><span style="color:#96b5b4;">__init__</span><span>(body, status, headers)
+</span></code></pre>
+<p>Example usage:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span>@app.</span><span style="color:#bf616a;">route</span><span>(&quot;</span><span style="color:#a3be8c;">/json</span><span>&quot;)
+</span><span style="color:#b48ead;">async def </span><span style="color:#8fa1b3;">json_route</span><span>(</span><span style="color:#bf616a;">request</span><span>):
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">JSONResponse</span><span>({&quot;</span><span style="color:#a3be8c;">message</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">Hello, JSON!</span><span>&quot;})
+</span></code></pre>
+<h1 id="conclusion">Conclusion</h1>
+<p>This minimal ASGI framework demonstrates:</p>
+<ul>
+<li>Request and response abstraction.</li>
+<li>Simple routing.</li>
+<li>JSON response handling.</li>
+</ul>
+<p>However, this framework is not meant for production use. It's a basic implementation designed to help you understand how web frameworks work. For a production-ready alternative, consider <a href="https://github.com/encode/starlette"><strong>Starlette</strong></a> or <a href="https://github.com/fastapi/fastapi"><strong>FastAPI</strong></a>, which offer more robust features, security, and scalability.</p>
+<p>Keep calm and <code>import this</code>.</p>
+<h1 id="references">References</h1>
+<p><a href="https://asgi.readthedocs.io/en/latest/">ASGI</a></p>
+<p><a href="https://www.uvicorn.org/">Uvicorn</a></p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ruitcatarino.github.io/tags/python/"
+      >python</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;typehints&#x2F;"
+    ><span class="mr-1.5">←</span><span>Mastering Type Hinting in Python</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;gunicorn-gthreads&#x2F;"
+    ><span>TIL: Gunicorn&#x27;s gthread Worker Timeout Doesn&#x27;t Work as Expected</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+
+  <!-- Page End inject -->
+  
+</article>
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://ruitcatarino.github.io">
+      ruitcatarino
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

@@ -1,0 +1,500 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Title -->
+  <title>
+    Metaclasses in Python: Mastering Class Creation and Customization - CodeMemoirs
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Metaclasses in Python: Mastering Class Creation and Customization" />
+  <meta name="author" content="ruitcatarino" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Metaclasses in Python: Mastering Class Creation and Customization" />
+  <meta property="og:site_name" content="CodeMemoirs" />
+  <meta property="og:description" content="Metaclasses in Python: Mastering Class Creation and Customization" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;metaclass&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://ruitcatarino.github.io/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://ruitcatarino.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://ruitcatarino.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://ruitcatarino.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://ruitcatarino.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+  <!---->
+  
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Atom"
+    href="https://ruitcatarino.github.io/atom.xml"
+  />
+   
+  <!---->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;metaclass&#x2F;" />
+
+  <!-- Head inject -->
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://ruitcatarino.github.io">CodeMemoirs</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0px] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:[background-position:right] dark:invert"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://ruitcatarino.github.io/tags"
+            >Tags</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg relative mx-auto min-h-[calc(100vh-9rem)] max-w-3xl px-4 pt-24 pb-16 break-words lg:pt-32"
+    >
+      
+<article>
+  <!-- Page Start inject -->
+  
+
+  <header class="mb-16">
+    <h1 class="my-0! pb-2.5">Metaclasses in Python: Mastering Class Creation and Customization</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2024-10-12</time>
+  <span class="mx-1">&middot;</span>
+  <span>4min</span>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>ruitcatarino</span>
+  
+  <!-- Page Info inject -->
+  
+</div>
+
+  </header>
+
+  
+
+  <!-- TOC -->
+  <!---->
+<div class="block-bg mb-12 flex rounded-lg p-2 text-lg">
+  <details>
+    <summary class="cursor-pointer py-1 pl-4">
+      <span>Table of Contents</span>
+    </summary>
+    <div class="px-2">
+      <ul>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#what-is-a-metaclass"
+            >What is a Metaclass?</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#creating-custom-metaclasses"
+            >Creating Custom Metaclasses</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#additional-methods-you-can-override-in-a-metaclass"
+                >Additional Methods You Can Override in a Metaclass</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#practical-examples-of-metaclass-usage"
+            >Practical Examples of Metaclass Usage</a
+          >
+          
+          <ul>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#enforcing-class-attributes"
+                >Enforcing Class Attributes</a
+              >
+            </li>
+            
+            <li>
+              <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#implementing-the-singleton-pattern"
+                >Implementing the Singleton Pattern</a
+              >
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#metaclasses-vs-class-decorators"
+            >Metaclasses vs. Class Decorators</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#conclusion"
+            >Conclusion</a
+          >
+          
+        </li>
+        
+        <li>
+          <a class="no-underline hover:underline" href="https://ruitcatarino.github.io/metaclass/#references"
+            >References</a
+          >
+          
+        </li>
+        
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!---->
+
+  <!-- Content -->
+  <section><p>When working with Python, you’ve likely come across concepts like classes and inheritance. But have you ever wondered how Python defines and creates classes themselves? That’s where metaclasses come into play.</p>
+<h1 id="what-is-a-metaclass">What is a Metaclass?</h1>
+<p>A metaclass is a class responsible for creating other classes, just as a class is responsible for creating objects. In simpler terms, if an object is an instance of a class, then a class is an instance of a metaclass.</p>
+<p>Metaclasses allow you to modify or customize how classes are defined and constructed. By default, Python uses <code>type()</code> as its metaclass. When you define a class using the <code>class</code> keyword, Python is essentially doing this behind the scenes:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">MyClass</span><span style="color:#eff1f5;">:
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">test</span><span>(</span><span style="color:#bf616a;">self</span><span>):
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">This is a test</span><span>&quot;)
+</span></code></pre>
+<p>The above is equivalent to the following:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span>MyClass = </span><span style="color:#96b5b4;">type</span><span>(&#39;</span><span style="color:#a3be8c;">MyClass</span><span>&#39;, (), {
+</span><span>    &#39;</span><span style="color:#a3be8c;">test</span><span>&#39;: </span><span style="color:#b48ead;">lambda </span><span style="color:#bf616a;">self</span><span>: </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">This is a test</span><span>&quot;)
+</span><span>})
+</span></code></pre>
+<p>The <code>_type(name,bases,namespace)_</code> function takes three arguments when creating a class:</p>
+<p><code>name</code>: The name of the class (as a string).</p>
+<p><code>bases</code>: A tuple of base classes for inheritance (use <code>()</code> for no inheritance).</p>
+<p><code>namespace</code>: A dictionary that holds attributes and methods for the class.</p>
+<h1 id="creating-custom-metaclasses">Creating Custom Metaclasses</h1>
+<p>To create a metaclass, you need to define a class that inherits from <code>type</code>. You can override three important methods:</p>
+<ol>
+<li><code>__new__(cls, name, bases, dct)</code>: Responsible for creating the new class.</li>
+<li><code>__init__(cls, name, bases, dct)</code>: Called after the class is created, allowing further customizations.</li>
+<li><code>__call__(cls, *args, **kwargs)</code>: Enables instances of the metaclass (i.e., the classes created by it) to be called like functions.</li>
+</ol>
+<p>Let’s walk through a basic example:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">MyMeta</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">type</span><span style="color:#eff1f5;">):
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__new__</span><span>(</span><span style="color:#bf616a;">cls</span><span>, </span><span style="color:#bf616a;">name</span><span>, </span><span style="color:#bf616a;">bases</span><span>, </span><span style="color:#bf616a;">dct</span><span>):
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Creating class </span><span>{name}&quot;)
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#96b5b4;">super</span><span>().</span><span style="color:#96b5b4;">__new__</span><span>(</span><span style="color:#bf616a;">cls</span><span>, name, bases, dct)
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__init__</span><span>(</span><span style="color:#bf616a;">cls</span><span>, </span><span style="color:#bf616a;">name</span><span>, </span><span style="color:#bf616a;">bases</span><span>, </span><span style="color:#bf616a;">dct</span><span>):
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Initializing class </span><span>{name}&quot;)
+</span><span>        </span><span style="color:#96b5b4;">super</span><span>().</span><span style="color:#96b5b4;">__init__</span><span>(name, bases, dct)
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__call__</span><span>(</span><span style="color:#bf616a;">cls</span><span>, *</span><span style="color:#bf616a;">args</span><span>, **</span><span style="color:#bf616a;">kwargs</span><span>):
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Creating an instance of </span><span>{</span><span style="color:#bf616a;">cls</span><span>.__name__}</span><span style="color:#a3be8c;"> with args: </span><span>{args}</span><span style="color:#a3be8c;"> and kwargs: </span><span>{kwargs}&quot;)
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#96b5b4;">super</span><span>().</span><span style="color:#96b5b4;">__call__</span><span>(*args, **kwargs)
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">MyClass</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">metaclass</span><span>=</span><span style="color:#a3be8c;">MyMeta</span><span style="color:#eff1f5;">):
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__init__</span><span>(</span><span style="color:#bf616a;">self</span><span>, *</span><span style="color:#bf616a;">args</span><span>, **</span><span style="color:#bf616a;">kwargs</span><span>):
+</span><span>        </span><span style="color:#b48ead;">pass
+</span><span style="color:#65737e;"># Output:
+</span><span style="color:#65737e;"># Creating class MyClass
+</span><span style="color:#65737e;"># Initializing class MyClass
+</span><span>obj = </span><span style="color:#bf616a;">MyClass</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#bf616a;">key</span><span>=&quot;</span><span style="color:#a3be8c;">value</span><span>&quot;)
+</span><span style="color:#65737e;"># Output:
+</span><span style="color:#65737e;"># Creating an instance of MyClass with args: (1,) and kwargs: {&#39;key&#39;: &#39;value&#39;}
+</span></code></pre>
+<p>You might be wondering what the difference between <code>__new__</code> and <code>__init__</code> is. In Python, <code>__new__</code> is a special method responsible for creating a new instance of a class, and returning it. On the other hand, <code>__init__</code> is called after the instance has been created and is used to initialize the instance’s attributes and set up its state. Essentially, <code>__new__</code> creates the instance, while <code>__init__</code> configures it.</p>
+<h2 id="additional-methods-you-can-override-in-a-metaclass">Additional Methods You Can Override in a Metaclass</h2>
+<p>Beyond <code>__new__</code>, <code>__init__</code>, and <code>__call__</code>, you can customize various other methods in a metaclass to gain further control over class behavior:</p>
+<ol>
+<li><code>__setattr__(cls, name, value)</code>: Customize behavior when setting attributes on the class.</li>
+<li><code>__getattr__(cls, name)</code>: Control the behavior for accessing non-existent class attributes.</li>
+<li><code>__delattr__(cls, name)</code>: Customize the behavior when an attribute is deleted from the class.</li>
+<li><code>__repr__(cls)</code>: Define a custom string representation of the class for debugging or logging.</li>
+<li><code>__str__(cls)</code>: Create a string representation of the class.</li>
+<li><code>__prepare__(name, bases)</code>: Customize the class namespace before the class is created.</li>
+<li><code>__instancecheck__(cls, instance)</code>: Modify how <code>isinstance()</code> behaves for classes created with the metaclass.</li>
+<li><code>__subclasscheck__(cls, subclass)</code>: Change how <code>issubclass()</code> operates for classes created with the metaclass.</li>
+</ol>
+<h1 id="practical-examples-of-metaclass-usage">Practical Examples of Metaclass Usage</h1>
+<h2 id="enforcing-class-attributes">Enforcing Class Attributes</h2>
+<p>Metaclasses can be used to enforce that certain attributes or methods are defined in a class. Here’s an example that ensures every subclass of <code>Animal</code> has a <code>speak()</code> method:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">EnforceSpeak</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">type</span><span style="color:#eff1f5;">):
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__new__</span><span>(</span><span style="color:#bf616a;">cls</span><span>, </span><span style="color:#bf616a;">name</span><span>, </span><span style="color:#bf616a;">bases</span><span>, </span><span style="color:#bf616a;">dct</span><span>):
+</span><span>        </span><span style="color:#b48ead;">if </span><span>&#39;</span><span style="color:#a3be8c;">speak</span><span>&#39; not in dct:
+</span><span>            </span><span style="color:#b48ead;">raise </span><span style="color:#bf616a;">TypeError</span><span>(</span><span style="color:#b48ead;">f</span><span>&quot;</span><span style="color:#a3be8c;">Class </span><span>{name}</span><span style="color:#a3be8c;"> must implement a &#39;speak&#39; method.</span><span>&quot;)
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#96b5b4;">super</span><span>().</span><span style="color:#96b5b4;">__new__</span><span>(</span><span style="color:#bf616a;">cls</span><span>, name, bases, dct)
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Animal</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">metaclass</span><span>=</span><span style="color:#a3be8c;">EnforceSpeak</span><span style="color:#eff1f5;">):
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">speak</span><span>(</span><span style="color:#bf616a;">self</span><span>):
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">I am an animal.</span><span>&quot;)
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Dog</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">Animal</span><span style="color:#eff1f5;">):
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#8fa1b3;">speak</span><span>(</span><span style="color:#bf616a;">self</span><span>):
+</span><span>        </span><span style="color:#96b5b4;">print</span><span>(&quot;</span><span style="color:#a3be8c;">Woof!</span><span>&quot;)
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Cat</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">Animal</span><span style="color:#eff1f5;">):
+</span><span>    </span><span style="color:#b48ead;">pass
+</span><span style="color:#65737e;"># Output: TypeError: Class Cat must implement a &#39;speak&#39; method.
+</span></code></pre>
+<h2 id="implementing-the-singleton-pattern">Implementing the Singleton Pattern</h2>
+<p>Metaclasses are excellent for implementing design patterns like the Singleton, where a class can only have one instance:</p>
+<pre data-lang="python" style="background-color:#2b303b;color:#c0c5ce;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Singleton</span><span style="color:#eff1f5;">(</span><span style="color:#a3be8c;">type</span><span style="color:#eff1f5;">):
+</span><span>    _instances = {}
+</span><span>    </span><span style="color:#b48ead;">def </span><span style="color:#96b5b4;">__call__</span><span>(</span><span style="color:#bf616a;">cls</span><span>, *</span><span style="color:#bf616a;">args</span><span>, **</span><span style="color:#bf616a;">kwargs</span><span>):
+</span><span>        </span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">cls </span><span>not in </span><span style="color:#bf616a;">cls</span><span>._instances:
+</span><span>            </span><span style="color:#bf616a;">cls</span><span>._instances[</span><span style="color:#bf616a;">cls</span><span>] = </span><span style="color:#96b5b4;">super</span><span>().</span><span style="color:#96b5b4;">__call__</span><span>(*args, **kwargs)
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">cls</span><span>._instances[</span><span style="color:#bf616a;">cls</span><span>]
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">MyClass</span><span style="color:#eff1f5;">(</span><span style="color:#bf616a;">metaclass</span><span>=</span><span style="color:#a3be8c;">Singleton</span><span style="color:#eff1f5;">):
+</span><span>    </span><span style="color:#b48ead;">pass
+</span><span>a = </span><span style="color:#bf616a;">MyClass</span><span>()
+</span><span>b = </span><span style="color:#bf616a;">MyClass</span><span>()
+</span><span style="color:#96b5b4;">print</span><span>(a is b)  </span><span style="color:#65737e;"># Output: True
+</span></code></pre>
+<p>The metaclass <code>Singleton</code> overrides the <code>__call__</code> method to ensure that only one instance of the class is created. Even though we try to create two instances of <code>MyClass</code>, both <code>a</code> and <code>b</code> refer to the same instance.</p>
+<h1 id="metaclasses-vs-class-decorators">Metaclasses vs. Class Decorators</h1>
+<p>While both metaclasses and class decorators can modify class behavior, they differ in important ways:</p>
+<ul>
+<li>Metaclasses intervene during class creation, while class decorators modify a class after it’s created.</li>
+<li>Metaclasses provide more control and are applied at a deeper level of the class creation lifecycle, making them more powerful, but also more complex.</li>
+</ul>
+<p>Use metaclasses when you need fine-grained control over the class itself (e.g., enforcing certain rules, design patterns), and class decorators when you need simple modifications after the class is defined.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Metaclasses are a powerful feature in Python that allow you to control and customize the behavior of class creation. While they can seem complex at first, understanding their purpose — defining how classes themselves are constructed — opens up advanced patterns in object-oriented programming.</p>
+<p>Whether you’re enforcing class-level constraints, creating singletons, or dynamically modifying class behavior, metaclasses give you deep control over how Python classes behave. While they are not needed in most day-to-day Python programming tasks, mastering them allows for more flexible and reusable code when working with complex systems.</p>
+<p>I hope this guide has deepened your understanding of Python.</p>
+<p>Keep calm and <code>import this</code>.</p>
+<h1 id="references">References</h1>
+<p><a href="https://docs.python.org/3/reference/datamodel.html">Data model</a></p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mr-1.5 mb-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mr-1.5 mb-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://ruitcatarino.github.io/tags/python/"
+      >python</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;mro&#x2F;"
+    ><span class="mr-1.5">←</span><span>Understanding Python’s Method Resolution Order (MRO)</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;async&#x2F;"
+    ><span>Asynchronous Python: Behind the Scenes with Asyncio</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+
+  <!-- Page End inject -->
+  
+</article>
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://ruitcatarino.github.io">
+      ruitcatarino
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>
