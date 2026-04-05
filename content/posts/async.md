@@ -28,7 +28,7 @@ At its core, `asyncio` allows you to define asynchronous tasks using `async def`
 
 Here’s an example of a basic `asyncio` program:
 
-```python
+```python,linenos
 import time
 import asyncio
 
@@ -73,7 +73,7 @@ Now that we’ve seen the basics of defining and awaiting tasks, let’s explore
 
 In `asyncio`, tasks represent coroutines that have been scheduled to run in the event loop. We can create tasks using `asyncio.create_task()` and await them individually, as seen earlier. However, if you need to run several tasks concurrently, you can await them all at once using `asyncio.gather()`.
 
-```python
+```python,linenos
 import asyncio
 
 async def greet(name):
@@ -95,7 +95,7 @@ In this example, `asyncio.gather()` allows the tasks to run concurrently, and th
 
 **Handling Exceptions with** `**return_exceptions**`: By default, if any task raises an exception, `asyncio.gather()` stops and raises that exception. However, if you set `return_exceptions=True`, exceptions are returned as part of the results, allowing the program to continue:
 
-```python
+```python,linenos
 async def faulty_task():
     raise ValueError("An error occurred!")
 
@@ -114,7 +114,7 @@ asyncio.run(main())
 
 Sometimes you need to enforce time limits on your tasks. `asyncio.wait_for()` is perfect for this. It allows you to set a timeout for a task, and if it doesn't finish in time, it raises a `TimeoutError`.
 
-```python
+```python,linenos
 import asyncio
 
 async def long_task():
@@ -135,7 +135,7 @@ asyncio.run(main())
 
 `asyncio` also allows you to cancel tasks that are no longer needed. This is particularly useful when you want to stop a task before it finishes. To cancel a task, call the `cancel()` method, and handle the `CancelledError` exception.
 
-```python
+```python,linenos
 import asyncio
 
 async def task_to_cancel():
@@ -162,7 +162,7 @@ asyncio.run(main())
 
 When multiple tasks need to access shared resources, you can use `asyncio.Lock()` to ensure that only one task can access the resource at a time. This helps avoid race conditions.
 
-```python
+```python,linenos
 import asyncio
 
 lock = asyncio.Lock()
@@ -186,7 +186,7 @@ asyncio.run(main())
 
 Sometimes, you want to allow multiple tasks to access a resource, but with a limit. `asyncio.Semaphore` lets you control how many tasks can run concurrently.
 
-```python
+```python,linenos
 import asyncio
 
 semaphore = asyncio.Semaphore(2)  # Allow 2 tasks at a time
@@ -208,7 +208,7 @@ asyncio.run(main())
 
 Queues are great for coordinating work between producer and consumer tasks. `asyncio.Queue` provides thread-safe operations for adding and retrieving items.
 
-```python
+```python,linenos
 import asyncio
 
 queue = asyncio.Queue()
@@ -241,7 +241,7 @@ asyncio.run(main())
 
 `asyncio.Event` allows tasks to wait for a signal before continuing. This is helpful for coordinating between tasks.
 
-```python
+```python,linenos
 import asyncio
 
 event = asyncio.Event()
@@ -266,7 +266,7 @@ asyncio.run(main())
 
 `asyncio.TaskGroup` simplifies managing multiple tasks, ensuring they complete or clean up together. It provides better error handling and automatic cancellation for tasks in the group.
 
-```python
+```python,linenos
 import asyncio
 
 async def task(name, delay):

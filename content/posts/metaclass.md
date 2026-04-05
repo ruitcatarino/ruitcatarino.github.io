@@ -17,7 +17,7 @@ A metaclass is a class responsible for creating other classes, just as a class i
 
 Metaclasses allow you to modify or customize how classes are defined and constructed. By default, Python uses `type()` as its metaclass. When you define a class using the `class` keyword, Python is essentially doing this behind the scenes:
 
-```python
+```python,linenos
 class MyClass:
     def test(self):
         print("This is a test")
@@ -25,7 +25,7 @@ class MyClass:
 
 The above is equivalent to the following:
 
-```python
+```python,linenos
 MyClass = type('MyClass', (), {
     'test': lambda self: print("This is a test")
 })
@@ -49,7 +49,7 @@ To create a metaclass, you need to define a class that inherits from `type`. You
 
 Let’s walk through a basic example:
 
-```python
+```python,linenos
 class MyMeta(type):
     def __new__(cls, name, bases, dct):
         print(f"Creating class {name}")
@@ -97,7 +97,7 @@ Beyond `__new__`, `__init__`, and `__call__`, you can customize various other me
 
 Metaclasses can be used to enforce that certain attributes or methods are defined in a class. Here’s an example that ensures every subclass of `Animal` has a `speak()` method:
 
-```python
+```python,linenos
 class EnforceSpeak(type):
     def __new__(cls, name, bases, dct):
         if 'speak' not in dct:
@@ -121,7 +121,7 @@ class Cat(Animal):
 
 Metaclasses are excellent for implementing design patterns like the Singleton, where a class can only have one instance:
 
-```python
+```python,linenos
 class Singleton(type):
 
     _instances = {}

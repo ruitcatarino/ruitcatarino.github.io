@@ -41,7 +41,7 @@ CMD ["gunicorn", "--bind", "0.0.0.0:8080", "project.wsgi:application", "-k", "gt
 ```
 
 ### A Simple View That Sleeps
-```python
+```python,linenos
 def long_sleep(request) -> HttpResponseBase:
     logger.info(f"Going to sleep!")
     time.sleep(30)

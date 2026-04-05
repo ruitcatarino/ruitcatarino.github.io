@@ -14,7 +14,7 @@ Type hinting, introduced in Python 3.5 with [PEP 484](https://peps.python.org/pe
 
 Type hinting allows you to annotate Python code with expected data types for variables, function arguments, and return values. This improves readability and helps tools like `mypy` catch errors before the code runs. For example:
 
-```python
+```python,linenos
 def greet(name: str) -> str:
     return f"Hello, {name}!"
 ```
@@ -31,7 +31,7 @@ You can annotate function arguments, return types, and variables using the `typi
 
 ## Functions
 
-```python
+```python,linenos
 def add(a: int, b: int) -> int:
     return a + b
 ```
@@ -40,7 +40,7 @@ This means `a` and `b` are integers, and the function returns an integer.
 
 ## Variables
 
-```python
+```python,linenos
 x: int = 10
 y: str = "Python"
 names: list[str] = ["Alice", "Bob"]
@@ -54,7 +54,7 @@ This tells readers and tools what types these variables are.
 ## Unions and Optional Arguments
 For more complex scenarios where multiple types are valid you can use the `|` operator:
 
-```python
+```python,linenos
 def add(a: int | float, b: int | float, c: int | float | None) -> int | float:
     result = a + b
     if c is not None:
@@ -68,7 +68,7 @@ This means `a` and `b` can be either `int` or `float` and `c` can be either `int
 
 You can also use `NewType` to define custom types:
 
-```python
+```python,linenos
 from typing import NewType
 
 Point = NewType("Point", tuple[int, int])
@@ -85,7 +85,7 @@ This creates a custom type called `Point` that is a tuple of two integers.
 
 The `collections.abc` module provides abstract base classes (ABCs) for common container types, enabling generic programming with consistent interfaces.
 
-```python
+```python,linenos
 from collections.abc import Iterable, Callable, Generator
 
 def process(iterable: Iterable[int]) -> None:

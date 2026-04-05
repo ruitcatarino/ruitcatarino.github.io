@@ -14,7 +14,7 @@ This post walks through building a minimal ASGI web framework from scratch for e
 
 # Understanding ASGI
 ASGI applications are Python callables that accept three arguments:
-```python
+```python,linenos
 async def app(scope, receive, send):
     ...
 ```
@@ -28,7 +28,7 @@ A minimal ASGI framework needs:
 - **Request & Response abstraction** for easier handling.
 
 ## Defining Request and Response Classes
-```python
+```python,linenos
 from urllib.parse import parse_qs
 
 class Request:
@@ -57,7 +57,7 @@ class Response:
         })
 ```
 ## Adding Routing
-```python
+```python,linenos
 class App:
     def __init__(self):
         self.routes = {}
@@ -86,7 +86,7 @@ class App:
 
 ## Define a Simple ASGI App Using the Framework
 Once the framework is set up, create an instance of `App` and define some routes:
-```python
+```python,linenos
 app = App()
 
 @app.route("/")
@@ -134,7 +134,7 @@ If deploying in **Kubernetes**, **Docker Swarm**, or behind a **load balancer**,
 
 # Handling JSON Requests and Responses
 Extend `Response` to handle JSON:
-```python
+```python,linenos
 import json
 
 class JSONResponse(Response):
@@ -145,7 +145,7 @@ class JSONResponse(Response):
 ```
 
 Example usage:
-```python
+```python,linenos
 @app.route("/json")
 async def json_route(request):
     return JSONResponse({"message": "Hello, JSON!"})

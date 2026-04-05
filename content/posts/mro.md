@@ -23,7 +23,7 @@ Python also provides a handy way to inspect the MRO of any class using the `.mro
 
 Since Python 2.3, the language uses the **C3 linearization algorithm** to compute the MRO for a class. In simple inheritance scenarios, this ordering can be intuitive, but as inheritance hierarchies grow complex, the MRO can become tricky to predict. Here’s an easy-to-understand example:
 
-```python
+```python,linenos
 class A: pass
 class B: pass
 class C(A,B): pass
@@ -38,7 +38,7 @@ F.mro()
 
 In this example, Python uses the MRO to determine which class’s method should be called first. However, when the inheritance hierarchy becomes more complex, as in the next example, predicting the MRO by intuition is more difficult:
 
-```python
+```python,linenos
 class A: pass
 class B: pass
 class C: pass
