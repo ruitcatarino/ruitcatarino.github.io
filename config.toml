@@ -100,6 +100,10 @@ name = "medium"
 url = "https://medium.com/@ruitcatarino/"
 
 [[extra.profile.social]]
+name = "bluesky"
+url = "https://bsky.app/profile/ruitcatarino.bsky.social/"
+
+[[extra.profile.social]]
 name = "rss"
 url = "$BASE_URL/atom.xml"
 
