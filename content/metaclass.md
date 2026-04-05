@@ -146,8 +146,6 @@ Whether you’re enforcing class-level constraints, creating singletons, or dyna
 
 I hope this guide has deepened your understanding of Python.
 
-Keep calm and `import this`.
-
 # References
 
 [Data model](https://docs.python.org/3/reference/datamodel.html)

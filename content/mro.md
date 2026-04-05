@@ -115,8 +115,6 @@ The Method Resolution Order (MRO) is a crucial part of Python’s object-oriente
 
 I hope this guide has deepened your understanding of Python.
 
-Keep calm and `import this`.
-
 # References
 
 [The Python 2.3 Method Resolution Order](https://www.python.org/download/releases/2.3/mro/)

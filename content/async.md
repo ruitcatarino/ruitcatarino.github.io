@@ -255,8 +255,6 @@ Asynchronous programming with `asyncio` is a game-changer for building scalable 
 
 I hope this post has clarified the inner workings of `asyncio` and showcased its ability to handle I/O-bound tasks effectively. Whether you're building a microservice or optimizing a project, mastering `asyncio` unlocks new possibilities for performance and scalability.
 
-Keep calm and `import this`.
-
 # References
 
 [asyncio - Asynchronous I/O](https://docs.python.org/3/library/asyncio.html)

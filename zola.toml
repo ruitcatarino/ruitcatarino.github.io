@@ -1,0 +1,26 @@
+# The URL the site will be built for
+base_url = "https://ruitcatarino.github.io"
+title = "CodeMemoirs"
+description = "A software engineer working as a backend developer who loves to code and learn new things."
+compile_sass = true
+build_search_index = true
+taxonomies = [{ name = "tags" }]
+theme = "apollo"
+
+[markdown]
+external_links_target_blank = true
+
+[markdown.highlighting]
+theme = "catppuccin-mocha"
+
+[extra]
+theme = "toggle-auto"
+fancy_code = true
+dynamic_note = true
+mathjax = true
+socials = [
+  { name = "github", url = "https://github.com/ruitcatarino/", icon = "github" },
+  { name = "bluesky", url = "https://bsky.app/profile/ruitcatarino.bsky.social/", icon = "bluesky" },
+  { name = "linkedin", url = "https://www.linkedin.com/in/ruitcatarino/", icon = "linkedin" },
+]
+menu = []

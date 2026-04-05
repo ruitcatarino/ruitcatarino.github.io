@@ -158,8 +158,6 @@ This minimal ASGI framework demonstrates:
 
 However, this framework is not meant for production use. It's a basic implementation designed to help you understand how web frameworks work. For a production-ready alternative, consider [**Starlette**](https://github.com/encode/starlette) or [**FastAPI**](https://github.com/fastapi/fastapi), which offer more robust features, security, and scalability.
 
-Keep calm and `import this`.
-
 # References
 
 [ASGI](https://asgi.readthedocs.io/en/latest/)

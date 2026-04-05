@@ -115,8 +115,6 @@ Note: Avoid using `typing.Iterable`, `typing.Callable`, etc., as they are deprec
 
 Type hinting is a powerful tool that improves code clarity, catches potential bugs early, and makes your codebase more maintainable. While it may seem like extra work at first, the long-term benefits, especially in larger or collaborative projects, are undeniable. By mastering the basics and exploring advanced techniques, you can write Python code that is not only functional but also robust and self-documenting.
 
-Keep calm and `import this`.
-
 # References
 
 [Support for type hints](https://docs.python.org/3/library/typing.html)
