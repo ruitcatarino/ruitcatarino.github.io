@@ -17,10 +17,12 @@ theme = "catppuccin-mocha"
 theme = "toggle-auto"
 fancy_code = true
 dynamic_note = true
-mathjax = true
 socials = [
   { name = "github", url = "https://github.com/ruitcatarino/", icon = "github" },
   { name = "bluesky", url = "https://bsky.app/profile/ruitcatarino.bsky.social/", icon = "bluesky" },
   { name = "linkedin", url = "https://www.linkedin.com/in/ruitcatarino/", icon = "linkedin" },
 ]
 menu = []
+
+[extra.analytics.umami]
+website_id = "3183e0b3-1313-480c-af61-0b3d30a7161a"
