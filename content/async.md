@@ -31,10 +31,12 @@ Here’s an example of a basic `asyncio` program:
 ```python
 import time
 import asyncio
+
 async def greet(name):
     print(f"Hello, {name}!")
     await asyncio.sleep(1)  # Sleep for 1 second
     print(f"Goodbye, {name}!")
+
 async def main():
     task1 = asyncio.create_task(greet("Rui"))
     task2 = asyncio.create_task(greet("Teixeira"))
@@ -44,9 +46,11 @@ async def main():
     await task1
     await task2
     await task3
+
 start_time = time.time()
 asyncio.run(main())
 print(f"Execution time: {time.time() - start_time} seconds.")
+
 # Output:
 # Hello, Rui!
 # Hello, Teixeira!
@@ -71,9 +75,11 @@ In `asyncio`, tasks represent coroutines that have been scheduled to run in the 
 
 ```python
 import asyncio
+
 async def greet(name):
     await asyncio.sleep(1)
     return f"Hello, {name}!"
+
 async def main():
     task1 = asyncio.create_task(greet("Rui"))
     task2 = asyncio.create_task(greet("Teixeira"))
@@ -81,6 +87,7 @@ async def main():
     
     results = await asyncio.gather(task1, task2, task3)
     print(results)
+
 asyncio.run(main())
 ```
 
@@ -91,6 +98,7 @@ In this example, `asyncio.gather()` allows the tasks to run concurrently, and th
 ```python
 async def faulty_task():
     raise ValueError("An error occurred!")
+
 async def main():
     results = await asyncio.gather(
         greet("Alice"),
@@ -98,6 +106,7 @@ async def main():
         return_exceptions=True
     )
     print(results)  # Outputs: ['Hello, Alice!', ValueError('An error occurred!')]
+
 asyncio.run(main())
 ```
 
@@ -107,15 +116,18 @@ Sometimes you need to enforce time limits on your tasks. `asyncio.wait_for()` is
 
 ```python
 import asyncio
+
 async def long_task():
     await asyncio.sleep(3)
     return "Task completed"
+
 async def main():
     try:
         result = await asyncio.wait_for(long_task(), timeout=2)
         print(result)
     except asyncio.TimeoutError:
         print("The task took too long!")
+
 asyncio.run(main())
 ```
 
@@ -125,6 +137,7 @@ asyncio.run(main())
 
 ```python
 import asyncio
+
 async def task_to_cancel():
     try:
         await asyncio.sleep(5)
@@ -132,6 +145,7 @@ async def task_to_cancel():
     except asyncio.CancelledError:
         print("Task was cancelled")
         raise
+
 async def main():
     task = asyncio.create_task(task_to_cancel())
     await asyncio.sleep(1)
@@ -140,6 +154,7 @@ async def main():
         await task
     except asyncio.CancelledError:
         print("Caught cancellation")
+
 asyncio.run(main())
 ```
 
@@ -149,17 +164,21 @@ When multiple tasks need to access shared resources, you can use `asyncio.Lock()
 
 ```python
 import asyncio
+
 lock = asyncio.Lock()
+
 async def critical_section(name):
     async with lock:
         print(f"{name} is in the critical section.")
         await asyncio.sleep(1)
         print(f"{name} is leaving the critical section.")
+
 async def main():
     await asyncio.gather(
         critical_section("Task 1"),
         critical_section("Task 2"),
     )
+
 asyncio.run(main())
 ```
 
@@ -169,15 +188,19 @@ Sometimes, you want to allow multiple tasks to access a resource, but with a lim
 
 ```python
 import asyncio
+
 semaphore = asyncio.Semaphore(2)  # Allow 2 tasks at a time
+
 async def limited_task(name):
     async with semaphore:
         print(f"{name} is working.")
         await asyncio.sleep(1)
         print(f"{name} is done.")
+
 async def main():
     tasks = [limited_task(f"Task {i}") for i in range(5)]
     await asyncio.gather(*tasks)
+
 asyncio.run(main())
 ```
 
@@ -187,12 +210,15 @@ Queues are great for coordinating work between producer and consumer tasks. `asy
 
 ```python
 import asyncio
+
 queue = asyncio.Queue()
+
 async def producer():
     for i in range(5):
         await queue.put(f"Item {i}")
         print(f"Produced: Item {i}")
         await asyncio.sleep(0.5)
+
 async def consumer():
     while True:
         item = await queue.get()
@@ -200,12 +226,14 @@ async def consumer():
             break
         print(f"Consumed: {item}")
         await asyncio.sleep(1)
+
 async def main():
     prod_task = asyncio.create_task(producer())
     cons_task = asyncio.create_task(consumer())
     await prod_task
     await queue.put(None)  # Signal the consumer to stop
     await cons_task
+
 asyncio.run(main())
 ```
 
@@ -215,17 +243,22 @@ asyncio.run(main())
 
 ```python
 import asyncio
+
 event = asyncio.Event()
+
 async def waiter():
     print("Waiting for the event...")
     await event.wait()
     print("Event set! Proceeding.")
+
 async def setter():
     print("Setting the event in 2 seconds...")
     await asyncio.sleep(2)
     event.set()
+
 async def main():
     await asyncio.gather(waiter(), setter())
+
 asyncio.run(main())
 ```
 
@@ -235,15 +268,18 @@ asyncio.run(main())
 
 ```python
 import asyncio
+
 async def task(name, delay):
     await asyncio.sleep(delay)
     print(f"{name} completed!")
+
 async def main():
     async with asyncio.TaskGroup() as tg:
         tg.create_task(task("Task 1", 1))
         tg.create_task(task("Task 2", 2))
         tg.create_task(task("Task 3", 3))
     print("All tasks completed!")
+
 asyncio.run(main())
 ```
 

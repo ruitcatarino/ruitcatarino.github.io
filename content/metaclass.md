@@ -54,18 +54,23 @@ class MyMeta(type):
     def __new__(cls, name, bases, dct):
         print(f"Creating class {name}")
         return super().__new__(cls, name, bases, dct)
+
     def __init__(cls, name, bases, dct):
         print(f"Initializing class {name}")
         super().__init__(name, bases, dct)
+
     def __call__(cls, *args, **kwargs):
         print(f"Creating an instance of {cls.__name__} with args: {args} and kwargs: {kwargs}")
         return super().__call__(*args, **kwargs)
+
 class MyClass(metaclass=MyMeta):
     def __init__(self, *args, **kwargs):
         pass
+
 # Output:
 # Creating class MyClass
 # Initializing class MyClass
+
 obj = MyClass(1, key="value")
 # Output:
 # Creating an instance of MyClass with args: (1,) and kwargs: {'key': 'value'}
@@ -98,12 +103,15 @@ class EnforceSpeak(type):
         if 'speak' not in dct:
             raise TypeError(f"Class {name} must implement a 'speak' method.")
         return super().__new__(cls, name, bases, dct)
+
 class Animal(metaclass=EnforceSpeak):
     def speak(self):
         print("I am an animal.")
+
 class Dog(Animal):
     def speak(self):
         print("Woof!")
+
 class Cat(Animal):
     pass
 # Output: TypeError: Class Cat must implement a 'speak' method.
@@ -115,13 +123,17 @@ Metaclasses are excellent for implementing design patterns like the Singleton, w
 
 ```python
 class Singleton(type):
+
     _instances = {}
+
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
             cls._instances[cls] = super().__call__(*args, **kwargs)
         return cls._instances[cls]
+
 class MyClass(metaclass=Singleton):
     pass
+
 a = MyClass()
 b = MyClass()
 print(a is b)  # Output: True
