@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="base" content="https:&#x2F;&#x2F;ruitcatarino.github.io" />
+
+    
+
+    
+
+    
+    
+    
+        <title>
+            
+                CodeMemoirs
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="CodeMemoirs" />
+        
+    
+
+    
+        
+            <meta property="og:description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+        
+            <meta name="description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+    
+
+    
+    
+        <link href=https://ruitcatarino.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="https://ruitcatarino.github.io/js/imamu.js"
+                    data-website-id="3183e0b3-1313-480c-af61-0b3d30a7161a"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+
+        
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/codeblock.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/toc.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/note.js></script>
+    
+
+    
+
+    
+    
+
+
+    
+
+    
+    
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/dark.css" />
+    
+
+    
+        
+            <script>
+                var themeToggleMode = "toggle-auto";
+            </script>
+        
+        <script src=https://ruitcatarino.github.io/js/themetoggle.js></script>
+
+        
+            <script>
+                setTheme(getSavedTheme());
+            </script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://ruitcatarino.github.io/main.css" />
+
+    
+
+    <script defer
+                    src="https://ruitcatarino.github.io/search_index.en.js?h=c3cb8b9ac0096dbcda8e"></script>
+        <script defer
+                src="https://ruitcatarino.github.io/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script>
+</head>
+
+
+    <body>
+        
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io>CodeMemoirs</a>
+        
+
+
+        <div class="socials">
+            
+                
+            
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;github.com&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="github"
+                         src="https://ruitcatarino.github.io/icons/social/github.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;bsky.app&#x2F;profile&#x2F;ruitcatarino.bsky.social&#x2F;" class="social">
+                    <img alt="bluesky"
+                         src="https://ruitcatarino.github.io/icons/social/bluesky.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="linkedin"
+                         src="https://ruitcatarino.github.io/icons/social/linkedin.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;posts&#x2F;atom.xml" class="social">
+                    <img alt="rss"
+                         src="https://ruitcatarino.github.io/icons/social/rss.svg" />
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://ruitcatarino.github.io/posts style="margin-right: 0.5em">&#x2F;posts</a>
+        
+            <a href=https://ruitcatarino.github.io/tags style="margin-right: 0.5em">&#x2F;tags</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://ruitcatarino.github.io/icons/search.svg"
+                     alt="Search"
+                     class="search-icon" />
+            </button>
+
+            <div id="searchModal"
+                 class="search-modal js"
+                 role="dialog"
+                 aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">
+                        Search
+                    </h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                               role="combobox"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-expanded="false"
+                               aria-controls="results-container"
+                               placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+        
+            <a id="dark-mode-toggle"
+               onclick="toggleTheme(); event.preventDefault();"
+               href="#">
+                <img src="https://ruitcatarino.github.io/icons/sun.svg" id="sun-icon" alt="Light" />
+                <img src="https://ruitcatarino.github.io/icons/moon.svg"
+                     id="moon-icon"
+                     style="filter: invert(1)"
+                     alt="Dark" />
+                
+                    <img src="https://ruitcatarino.github.io/icons/auto.svg"
+                         id="auto-icon"
+                         style="filter: invert(1)"
+                         alt="Auto" />
+                
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>
+                updateItemToggleTheme()
+            </script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    <div>
+        
+            
+    
+        <div class="page-header">
+            Tags
+        </div>
+    
+
+        
+
+        <main class="tag-list">
+            
+            
+
+            
+
+            <ul>
+                    <div class="post-header">
+                        <h1 class="title">
+                            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;tags&#x2F;til&#x2F;>TIL</a>
+                        </h1>
+
+                        <small class="meta">1 page</small>
+                    </div>
+                
+                    <div class="post-header">
+                        <h1 class="title">
+                            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;tags&#x2F;algorithms&#x2F;>algorithms</a>
+                        </h1>
+
+                        <small class="meta">1 page</small>
+                    </div>
+                
+                    <div class="post-header">
+                        <h1 class="title">
+                            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;tags&#x2F;programming&#x2F;>programming</a>
+                        </h1>
+
+                        <small class="meta">7 pages</small>
+                    </div>
+                
+                    <div class="post-header">
+                        <h1 class="title">
+                            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;tags&#x2F;python&#x2F;>python</a>
+                        </h1>
+
+                        <small class="meta">6 pages</small>
+                    </div>
+                </ul>
+        </main>
+    </div>
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+            
+        </div>
+        
+    </body>
+
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="base" content="https:&#x2F;&#x2F;ruitcatarino.github.io" />
+
+    
+
+    
+
+    
+    
+    
+        <title>
+            
+                Building a Minimal ASGI Web Framework in Python
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Building a Minimal ASGI Web Framework in Python" />
+        
+    
+
+    
+        
+            <meta property="og:description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+        
+            <meta name="description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+    
+
+    
+    
+        <link href=https://ruitcatarino.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="https://ruitcatarino.github.io/js/imamu.js"
+                    data-website-id="3183e0b3-1313-480c-af61-0b3d30a7161a"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+
+        
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/codeblock.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/toc.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/note.js></script>
+    
+
+    
+
+    
+    
+
+
+    
+
+    
+    
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/dark.css" />
+    
+
+    
+        
+            <script>
+                var themeToggleMode = "toggle-auto";
+            </script>
+        
+        <script src=https://ruitcatarino.github.io/js/themetoggle.js></script>
+
+        
+            <script>
+                setTheme(getSavedTheme());
+            </script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://ruitcatarino.github.io/main.css" />
+
+    
+
+    <script defer
+                    src="https://ruitcatarino.github.io/search_index.en.js?h=c3cb8b9ac0096dbcda8e"></script>
+        <script defer
+                src="https://ruitcatarino.github.io/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script>
+</head>
+
+
+    <body>
+        
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io>CodeMemoirs</a>
+        
+
+
+        <div class="socials">
+            
+                
+            
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;github.com&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="github"
+                         src="https://ruitcatarino.github.io/icons/social/github.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;bsky.app&#x2F;profile&#x2F;ruitcatarino.bsky.social&#x2F;" class="social">
+                    <img alt="bluesky"
+                         src="https://ruitcatarino.github.io/icons/social/bluesky.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="linkedin"
+                         src="https://ruitcatarino.github.io/icons/social/linkedin.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;posts&#x2F;atom.xml" class="social">
+                    <img alt="rss"
+                         src="https://ruitcatarino.github.io/icons/social/rss.svg" />
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://ruitcatarino.github.io/posts style="margin-right: 0.5em">&#x2F;posts</a>
+        
+            <a href=https://ruitcatarino.github.io/tags style="margin-right: 0.5em">&#x2F;tags</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://ruitcatarino.github.io/icons/search.svg"
+                     alt="Search"
+                     class="search-icon" />
+            </button>
+
+            <div id="searchModal"
+                 class="search-modal js"
+                 role="dialog"
+                 aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">
+                        Search
+                    </h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                               role="combobox"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-expanded="false"
+                               aria-controls="results-container"
+                               placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+        
+            <a id="dark-mode-toggle"
+               onclick="toggleTheme(); event.preventDefault();"
+               href="#">
+                <img src="https://ruitcatarino.github.io/icons/sun.svg" id="sun-icon" alt="Light" />
+                <img src="https://ruitcatarino.github.io/icons/moon.svg"
+                     id="moon-icon"
+                     style="filter: invert(1)"
+                     alt="Dark" />
+                
+                    <img src="https://ruitcatarino.github.io/icons/auto.svg"
+                         id="auto-icon"
+                         style="filter: invert(1)"
+                         alt="Auto" />
+                
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>
+                updateItemToggleTheme()
+            </script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+    <div class="visible-element-observer-root" data-selector="main article p">
+        <main>
+            <article>
+                <div class="title">
+                    
+                    
+    
+        <div class="page-header">
+            Building a Minimal ASGI Web Framework in Python
+        </div>
+    
+
+
+                    <div class="meta">
+                        
+                            Posted on <time>2025-01-05</time>
+                        
+
+
+                        
+
+                        
+
+                        
+
+                        
+                        
+
+                        
+                        
+
+                        
+                        
+                            <span class="tags-label">::</span>
+                            <span class="tags">
+                                    <a href="https://ruitcatarino.github.io/tags/programming/"
+                                       class="post-tag">programming</a>
+                                
+                                    <a href="https://ruitcatarino.github.io/tags/python/"
+                                       class="post-tag">python</a>
+                                
+                            </span>
+                        
+
+                        
+
+                    </div>
+                </div>
+
+                
+
+                <section class="body">
+                    <p>ASGI (Asynchronous Server Gateway Interface) is the modern standard for asynchronous Python web applications, extending WSGI to support WebSockets, long-lived connections, and background tasks.</p>
+<p>This post walks through building a minimal ASGI web framework from scratch for educational purposes, designed to help you understand how web frameworks work under the hood.</p>
+<h1 id="understanding-asgi">Understanding ASGI</h1>
+<p>ASGI applications are Python callables that accept three arguments:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">1</span><span style="color: #CBA6F7;">async def</span><span style="color: #89B4FA;font-style: italic;"> app</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">scope</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> receive</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> send</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">2</span><span>    ...</span></span></code></pre>
+<ul>
+<li><strong>scope</strong>: Connection information (type, path, headers).</li>
+<li><strong>receive</strong>: Async function to receive events (for WebSockets or HTTP requests).</li>
+<li><strong>send</strong>: Async function to send responses.</li>
+</ul>
+<h1 id="creating-the-core-framework">Creating the Core Framework</h1>
+<p>A minimal ASGI framework needs:</p>
+<ul>
+<li><strong>Routing</strong> to match incoming requests to handlers.</li>
+<li><strong>Request &amp; Response abstraction</strong> for easier handling.</li>
+</ul>
+<h2 id="defining-request-and-response-classes">Defining Request and Response Classes</h2>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 1</span><span style="color: #CBA6F7;">from</span><span> urllib</span><span style="color: #9399B2;">.</span><span>parse</span><span style="color: #CBA6F7;"> import</span><span> parse_qs</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 2</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 3</span><span style="color: #CBA6F7;">class</span><span style="color: #F9E2AF;font-style: italic;"> Request</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 4</span><span style="color: #CBA6F7;">    def</span><span style="color: #89DCEB;font-style: italic;"> __init__</span><span style="color: #9399B2;">(</span><span style="color: #F38BA8;font-style: italic;">self</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> scope</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> receive</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 5</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>scope</span><span style="color: #94E2D5;"> =</span><span> scope</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 6</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>receive</span><span style="color: #94E2D5;"> =</span><span> receive</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 7</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>method</span><span style="color: #94E2D5;"> =</span><span style="color: #EBA0AC;font-style: italic;"> scope</span><span style="color: #9399B2;">[</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #A6E3A1;font-style: italic;">method</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 8</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>path</span><span style="color: #94E2D5;"> =</span><span style="color: #EBA0AC;font-style: italic;"> scope</span><span style="color: #9399B2;">[</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #A6E3A1;font-style: italic;">path</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 9</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>query_params</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;"> parse_qs</span><span style="color: #9399B2;">(</span><span>scope</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">get</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;query_string&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;font-style: italic;"> b</span><span style="color: #A6E3A1;">&quot;&quot;</span><span style="color: #9399B2;">).</span><span style="color: #89B4FA;">decode</span><span style="color: #9399B2;">())</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">10</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">11</span><span style="color: #CBA6F7;">class</span><span style="color: #F9E2AF;font-style: italic;"> Response</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">12</span><span style="color: #CBA6F7;">    def</span><span style="color: #89DCEB;font-style: italic;"> __init__</span><span style="color: #9399B2;">(</span><span style="color: #F38BA8;font-style: italic;">self</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> body</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> status</span><span style="color: #94E2D5;">=</span><span style="color: #FAB387;">200</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> headers</span><span style="color: #94E2D5;">=</span><span style="color: #FAB387;">None</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">13</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>body</span><span style="color: #94E2D5;"> =</span><span> body</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">encode</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;utf-8&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">14</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>status</span><span style="color: #94E2D5;"> =</span><span> status</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">15</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>headers</span><span style="color: #94E2D5;"> =</span><span> headers</span><span style="color: #CBA6F7;"> or</span><span style="color: #9399B2;"> [(</span><span style="color: #A6E3A1;">&quot;content-type&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;text/plain&quot;</span><span style="color: #9399B2;">)]</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">16</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">17</span><span style="color: #CBA6F7;">    async def</span><span style="color: #89B4FA;font-style: italic;"> send</span><span style="color: #9399B2;">(</span><span style="color: #F38BA8;font-style: italic;">self</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> send</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">18</span><span style="color: #CBA6F7;">        await</span><span style="color: #89B4FA;"> send</span><span style="color: #9399B2;">({</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">19</span><span style="color: #A6E3A1;">            &quot;type&quot;</span><span style="color: #9399B2;">:</span><span style="color: #A6E3A1;"> &quot;http.response.start&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">20</span><span style="color: #A6E3A1;">            &quot;status&quot;</span><span style="color: #9399B2;">:</span><span style="color: #F38BA8;font-style: italic;"> self</span><span style="color: #9399B2;">.</span><span>status</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">21</span><span style="color: #A6E3A1;">            &quot;headers&quot;</span><span style="color: #9399B2;">: [(</span><span>k</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">encode</span><span style="color: #9399B2;">(),</span><span> v</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">encode</span><span style="color: #9399B2;">())</span><span style="color: #CBA6F7;"> for</span><span> k</span><span style="color: #9399B2;">,</span><span> v</span><span style="color: #CBA6F7;"> in</span><span style="color: #F38BA8;font-style: italic;"> self</span><span style="color: #9399B2;">.</span><span>headers</span><span style="color: #9399B2;">],</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">22</span><span style="color: #9399B2;">        })</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">23</span><span style="color: #CBA6F7;">        await</span><span style="color: #89B4FA;"> send</span><span style="color: #9399B2;">({</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">24</span><span style="color: #A6E3A1;">            &quot;type&quot;</span><span style="color: #9399B2;">:</span><span style="color: #A6E3A1;"> &quot;http.response.body&quot;</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">25</span><span style="color: #A6E3A1;">            &quot;body&quot;</span><span style="color: #9399B2;">:</span><span style="color: #F38BA8;font-style: italic;"> self</span><span style="color: #9399B2;">.</span><span>body</span><span style="color: #9399B2;">,</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">26</span><span style="color: #9399B2;">        })</span></span></code></pre><h2 id="adding-routing">Adding Routing</h2>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 1</span><span style="color: #CBA6F7;">class</span><span style="color: #F9E2AF;font-style: italic;"> App</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 2</span><span style="color: #CBA6F7;">    def</span><span style="color: #89DCEB;font-style: italic;"> __init__</span><span style="color: #9399B2;">(</span><span style="color: #F38BA8;font-style: italic;">self</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 3</span><span style="color: #F38BA8;font-style: italic;">        self</span><span style="color: #9399B2;">.</span><span>routes</span><span style="color: #94E2D5;"> =</span><span style="color: #9399B2;"> {}</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 4</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 5</span><span style="color: #CBA6F7;">    def</span><span style="color: #89B4FA;font-style: italic;"> route</span><span style="color: #9399B2;">(</span><span style="color: #F38BA8;font-style: italic;">self</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> path</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 6</span><span style="color: #CBA6F7;">        def</span><span style="color: #89B4FA;font-style: italic;"> wrapper</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">handler</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 7</span><span style="color: #F38BA8;font-style: italic;">            self</span><span style="color: #9399B2;">.</span><span style="color: #EBA0AC;font-style: italic;">routes</span><span style="color: #9399B2;">[</span><span style="color: #EBA0AC;font-style: italic;">path</span><span style="color: #9399B2;">]</span><span style="color: #94E2D5;"> =</span><span> handler</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 8</span><span style="color: #CBA6F7;">            return</span><span> handler</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 9</span><span style="color: #CBA6F7;">        return</span><span> wrapper</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">10</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">11</span><span style="color: #CBA6F7;">    async def</span><span style="color: #89DCEB;font-style: italic;"> __call__</span><span style="color: #9399B2;">(</span><span style="color: #F38BA8;font-style: italic;">self</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> scope</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> receive</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> send</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">12</span><span style="color: #CBA6F7;">        if</span><span style="color: #EBA0AC;font-style: italic;"> scope</span><span style="color: #9399B2;">[</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #A6E3A1;font-style: italic;">type</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;">]</span><span style="color: #94E2D5;"> !=</span><span style="color: #A6E3A1;"> &quot;http&quot;</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">13</span><span style="color: #CBA6F7;">            return</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">14</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">15</span><span>        request</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;"> Request</span><span style="color: #9399B2;">(</span><span>scope</span><span style="color: #9399B2;">,</span><span> receive</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">16</span><span>        handler</span><span style="color: #94E2D5;"> =</span><span style="color: #F38BA8;font-style: italic;"> self</span><span style="color: #9399B2;">.</span><span>routes</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">get</span><span style="color: #9399B2;">(</span><span>request</span><span style="color: #9399B2;">.</span><span>path</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">17</span><span>        </span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">18</span><span style="color: #CBA6F7;">        if</span><span> handler</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">19</span><span>            response</span><span style="color: #94E2D5;"> =</span><span style="color: #CBA6F7;"> await</span><span style="color: #89B4FA;"> handler</span><span style="color: #9399B2;">(</span><span>request</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">20</span><span style="color: #CBA6F7;">        else</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">21</span><span>            response</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;"> Response</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;Not Found&quot;</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> status</span><span style="color: #94E2D5;">=</span><span style="color: #FAB387;">404</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">22</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">23</span><span style="color: #CBA6F7;">        await</span><span> response</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">send</span><span style="color: #9399B2;">(</span><span>send</span><span style="color: #9399B2;">)</span></span></code></pre><h1 id="running-the-application">Running the Application</h1>
+<h2 id="define-a-simple-asgi-app-using-the-framework">Define a Simple ASGI App Using the Framework</h2>
+<p>Once the framework is set up, create an instance of <code>App</code> and define some routes:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 1</span><span>app</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;"> App</span><span style="color: #9399B2;">()</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 2</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 3</span><span style="color: #FAB387;font-style: italic;">@app</span><span style="color: #9399B2;">.</span><span style="color: #FAB387;font-style: italic;">route</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;/&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 4</span><span style="color: #CBA6F7;">async def</span><span style="color: #89B4FA;font-style: italic;"> homepage</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">request</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 5</span><span style="color: #CBA6F7;">    return</span><span style="color: #89B4FA;"> Response</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;Hello, ASGI!&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 6</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 7</span><span style="color: #FAB387;font-style: italic;">@app</span><span style="color: #9399B2;">.</span><span style="color: #FAB387;font-style: italic;">route</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;/echo&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 8</span><span style="color: #CBA6F7;">async def</span><span style="color: #89B4FA;font-style: italic;"> echo</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">request</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 9</span><span>    message</span><span style="color: #94E2D5;"> =</span><span> request</span><span style="color: #9399B2;">.</span><span>query_params</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">get</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;message&quot;</span><span style="color: #9399B2;">, [</span><span style="color: #A6E3A1;">&quot;&quot;</span><span style="color: #9399B2;">])[</span><span style="color: #FAB387;">0</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">10</span><span style="color: #CBA6F7;">    return</span><span style="color: #89B4FA;"> Response</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;font-style: italic;">f</span><span style="color: #A6E3A1;">&quot;You said: </span><span style="color: #F5C2E7;">{</span><span>message</span><span style="color: #F5C2E7;">}</span><span style="color: #A6E3A1;">&quot;</span><span style="color: #9399B2;">)</span></span></code></pre><h2 id="running-the-server-locally">Running the Server Locally</h2>
+<p>To start the ASGI application locally, use <strong>Uvicorn</strong>, a high-performance ASGI server:</p>
+<p>First, install Uvicorn if you haven't:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">pip</span><span style="color: #A6E3A1;"> install uvicorn</span></span></code></pre>
+<p>Then, run the server:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">uvicorn</span><span style="color: #A6E3A1;"> myapp:app --host</span><span style="color: #FAB387;"> 127.0.0.1</span><span style="color: #A6E3A1;"> --port</span><span style="color: #FAB387;"> 8000</span></span></code></pre>
+<p>You can test it in a browser or with <code>curl</code>:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> http://127.0.0.1:8000/</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">curl</span><span style="color: #A6E3A1;"> http://127.0.0.1:8000/echo?message=Hello</span></span></code></pre><h2 id="deploying-to-production">Deploying to Production</h2>
+<p>For production, use <strong>Uvicorn with multiple workers</strong> behind a process manager like <code>systemd</code> or a reverse proxy like <code>nginx</code>:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">uvicorn</span><span style="color: #A6E3A1;"> myapp:app --host</span><span style="color: #FAB387;"> 0.0.0.0</span><span style="color: #A6E3A1;"> --port</span><span style="color: #FAB387;"> 8000</span><span style="color: #A6E3A1;"> --workers</span><span style="color: #FAB387;"> 4</span></span></code></pre>
+<p>Alternatively, use <strong>Daphne</strong>:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">pip</span><span style="color: #A6E3A1;"> install daphne</span></span>
+<span class="giallo-l"><span style="color: #89B4FA;font-style: italic;">daphne</span><span style="color: #A6E3A1;"> -b</span><span style="color: #FAB387;"> 0.0.0.0</span><span style="color: #A6E3A1;"> -p</span><span style="color: #FAB387;"> 8000</span><span style="color: #A6E3A1;"> myapp:app</span></span></code></pre><h3 id="note-on-kubernetes-docker-swarm-and-load-balancers">Note on Kubernetes, Docker Swarm, and Load Balancers</h3>
+<p>If deploying in <strong>Kubernetes</strong>, <strong>Docker Swarm</strong>, or behind a <strong>load balancer</strong>, the general best practice is to run <strong>only one worker per container or pod</strong>. The load balancer distributes traffic across multiple instances, making additional workers inside a single container unnecessary and potentially counterproductive.</p>
+<h1 id="handling-json-requests-and-responses">Handling JSON Requests and Responses</h1>
+<p>Extend <code>Response</code> to handle JSON:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">1</span><span style="color: #CBA6F7;">import</span><span> json</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">2</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">3</span><span style="color: #CBA6F7;">class</span><span style="color: #F9E2AF;font-style: italic;"> JSONResponse</span><span style="color: #9399B2;">(</span><span style="color: #F9E2AF;font-style: italic;">Response</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">4</span><span style="color: #CBA6F7;">    def</span><span style="color: #89DCEB;font-style: italic;"> __init__</span><span style="color: #9399B2;">(</span><span style="color: #F38BA8;font-style: italic;">self</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> data</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> status</span><span style="color: #94E2D5;">=</span><span style="color: #FAB387;">200</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> headers</span><span style="color: #94E2D5;">=</span><span style="color: #FAB387;">None</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">5</span><span>        body</span><span style="color: #94E2D5;"> =</span><span> json</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">dumps</span><span style="color: #9399B2;">(</span><span>data</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">6</span><span>        headers</span><span style="color: #94E2D5;"> =</span><span> headers</span><span style="color: #CBA6F7;"> or</span><span style="color: #9399B2;"> [(</span><span style="color: #A6E3A1;">&quot;content-type&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;application/json&quot;</span><span style="color: #9399B2;">)]</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">7</span><span style="color: #CBA6F7;font-style: italic;">        super</span><span style="color: #9399B2;">().</span><span style="color: #89DCEB;font-style: italic;">__init__</span><span style="color: #9399B2;">(</span><span>body</span><span style="color: #9399B2;">,</span><span> status</span><span style="color: #9399B2;">,</span><span> headers</span><span style="color: #9399B2;">)</span></span></code></pre>
+<p>Example usage:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">1</span><span style="color: #FAB387;font-style: italic;">@app</span><span style="color: #9399B2;">.</span><span style="color: #FAB387;font-style: italic;">route</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;/json&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">2</span><span style="color: #CBA6F7;">async def</span><span style="color: #89B4FA;font-style: italic;"> json_route</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">request</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">3</span><span style="color: #CBA6F7;">    return</span><span style="color: #89B4FA;"> JSONResponse</span><span style="color: #9399B2;">({</span><span style="color: #A6E3A1;">&quot;message&quot;</span><span style="color: #9399B2;">:</span><span style="color: #A6E3A1;"> &quot;Hello, JSON!&quot;</span><span style="color: #9399B2;">})</span></span></code></pre><h1 id="conclusion">Conclusion</h1>
+<p>This minimal ASGI framework demonstrates:</p>
+<ul>
+<li>Request and response abstraction.</li>
+<li>Simple routing.</li>
+<li>JSON response handling.</li>
+</ul>
+<p>However, this framework is not meant for production use. It's a basic implementation designed to help you understand how web frameworks work. For a production-ready alternative, consider <a rel="noopener external" target="_blank" href="https://github.com/encode/starlette"><strong>Starlette</strong></a> or <a rel="noopener external" target="_blank" href="https://github.com/fastapi/fastapi"><strong>FastAPI</strong></a>, which offer more robust features, security, and scalability.</p>
+<h1 id="references">References</h1>
+<p><a rel="noopener external" target="_blank" href="https://asgi.readthedocs.io/en/latest/">ASGI</a></p>
+<p><a rel="noopener external" target="_blank" href="https://www.uvicorn.org/">Uvicorn</a></p>
+
+                </section>
+            </article>
+        </main>
+    </div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">
+        Table of Contents
+    </div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#understanding-asgi">Understanding ASGI</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#creating-the-core-framework">Creating the Core Framework</a>
+
+                
+                    <ul>
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#defining-request-and-response-classes">Defining Request and Response Classes</a>
+                            </li>
+
+                            
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#adding-routing">Adding Routing</a>
+                            </li>
+
+                            
+                        
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#running-the-application">Running the Application</a>
+
+                
+                    <ul>
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#define-a-simple-asgi-app-using-the-framework">Define a Simple ASGI App Using the Framework</a>
+                            </li>
+
+                            
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#running-the-server-locally">Running the Server Locally</a>
+                            </li>
+
+                            
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#deploying-to-production">Deploying to Production</a>
+                            </li>
+
+                            
+                                <ul>
+                                    
+                                        <li>
+                                            <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#note-on-kubernetes-docker-swarm-and-load-balancers">Note on Kubernetes, Docker Swarm, and Load Balancers</a>
+                                        </li>
+                                    
+                                </ul>
+                            
+                        
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#handling-json-requests-and-responses">Handling JSON Requests and Responses</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#conclusion">Conclusion</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/minimal-asgi/#references">References</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+        
+    </body>
+
+</html>

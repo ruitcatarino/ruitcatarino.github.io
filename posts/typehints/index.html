@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="base" content="https:&#x2F;&#x2F;ruitcatarino.github.io" />
+
+    
+
+    
+
+    
+    
+    
+        <title>
+            
+                Mastering Type Hinting in Python
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="Mastering Type Hinting in Python" />
+        
+    
+
+    
+        
+            <meta property="og:description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+        
+            <meta name="description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+    
+
+    
+    
+        <link href=https://ruitcatarino.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="https://ruitcatarino.github.io/js/imamu.js"
+                    data-website-id="3183e0b3-1313-480c-af61-0b3d30a7161a"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+
+        
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/codeblock.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/toc.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/note.js></script>
+    
+
+    
+
+    
+    
+
+
+    
+
+    
+    
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/dark.css" />
+    
+
+    
+        
+            <script>
+                var themeToggleMode = "toggle-auto";
+            </script>
+        
+        <script src=https://ruitcatarino.github.io/js/themetoggle.js></script>
+
+        
+            <script>
+                setTheme(getSavedTheme());
+            </script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://ruitcatarino.github.io/main.css" />
+
+    
+
+    <script defer
+                    src="https://ruitcatarino.github.io/search_index.en.js?h=c3cb8b9ac0096dbcda8e"></script>
+        <script defer
+                src="https://ruitcatarino.github.io/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script>
+</head>
+
+
+    <body>
+        
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io>CodeMemoirs</a>
+        
+
+
+        <div class="socials">
+            
+                
+            
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;github.com&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="github"
+                         src="https://ruitcatarino.github.io/icons/social/github.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;bsky.app&#x2F;profile&#x2F;ruitcatarino.bsky.social&#x2F;" class="social">
+                    <img alt="bluesky"
+                         src="https://ruitcatarino.github.io/icons/social/bluesky.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="linkedin"
+                         src="https://ruitcatarino.github.io/icons/social/linkedin.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;posts&#x2F;atom.xml" class="social">
+                    <img alt="rss"
+                         src="https://ruitcatarino.github.io/icons/social/rss.svg" />
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://ruitcatarino.github.io/posts style="margin-right: 0.5em">&#x2F;posts</a>
+        
+            <a href=https://ruitcatarino.github.io/tags style="margin-right: 0.5em">&#x2F;tags</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://ruitcatarino.github.io/icons/search.svg"
+                     alt="Search"
+                     class="search-icon" />
+            </button>
+
+            <div id="searchModal"
+                 class="search-modal js"
+                 role="dialog"
+                 aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">
+                        Search
+                    </h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                               role="combobox"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-expanded="false"
+                               aria-controls="results-container"
+                               placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+        
+            <a id="dark-mode-toggle"
+               onclick="toggleTheme(); event.preventDefault();"
+               href="#">
+                <img src="https://ruitcatarino.github.io/icons/sun.svg" id="sun-icon" alt="Light" />
+                <img src="https://ruitcatarino.github.io/icons/moon.svg"
+                     id="moon-icon"
+                     style="filter: invert(1)"
+                     alt="Dark" />
+                
+                    <img src="https://ruitcatarino.github.io/icons/auto.svg"
+                         id="auto-icon"
+                         style="filter: invert(1)"
+                         alt="Auto" />
+                
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>
+                updateItemToggleTheme()
+            </script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+    <div class="visible-element-observer-root" data-selector="main article p">
+        <main>
+            <article>
+                <div class="title">
+                    
+                    
+    
+        <div class="page-header">
+            Mastering Type Hinting in Python
+        </div>
+    
+
+
+                    <div class="meta">
+                        
+                            Posted on <time>2024-12-29</time>
+                        
+
+
+                        
+
+                        
+
+                        
+
+                        
+                        
+
+                        
+                        
+
+                        
+                        
+                            <span class="tags-label">::</span>
+                            <span class="tags">
+                                    <a href="https://ruitcatarino.github.io/tags/programming/"
+                                       class="post-tag">programming</a>
+                                
+                                    <a href="https://ruitcatarino.github.io/tags/python/"
+                                       class="post-tag">python</a>
+                                
+                            </span>
+                        
+
+                        
+
+                    </div>
+                </div>
+
+                
+
+                <section class="body">
+                    <p>Type hinting, introduced in Python 3.5 with <a rel="noopener external" target="_blank" href="https://peps.python.org/pep-0484/">PEP 484</a>, makes code clearer, less error-prone, and easier to maintain. It’s not just about neatness, it helps catch bugs early and makes life easier for you and your team. In this post, I’ll cover the basics, benefits, and advanced tips to help you get the most out of type hints.</p>
+<h1 id="what-is-type-hinting">What is Type Hinting?</h1>
+<p>Type hinting allows you to annotate Python code with expected data types for variables, function arguments, and return values. This improves readability and helps tools like <code>mypy</code> catch errors before the code runs. For example:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">1</span><span style="color: #CBA6F7;">def</span><span style="color: #89B4FA;font-style: italic;"> greet</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">name</span><span style="color: #9399B2;">:</span><span style="color: #CBA6F7;font-style: italic;"> str</span><span style="color: #9399B2;">) -&gt;</span><span style="color: #CBA6F7;font-style: italic;"> str</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">2</span><span style="color: #CBA6F7;">    return</span><span style="color: #A6E3A1;font-style: italic;"> f</span><span style="color: #A6E3A1;">&quot;Hello, </span><span style="color: #F5C2E7;">{</span><span>name</span><span style="color: #F5C2E7;">}</span><span style="color: #A6E3A1;">!&quot;</span></span></code></pre>
+<p>Here, <code>name</code> is a string, and the function returns a string. Simple, right?</p>
+<h1 id="why-use-type-hinting">Why Use Type Hinting?</h1>
+<p>Type hints make your code self-explanatory, help avoid mistakes, and enable smarter autocompletion in IDEs. They don’t change how Python runs your code but make it easier to work with, especially in large or collaborative projects.</p>
+<h1 id="basics-of-type-hinting">Basics of Type Hinting</h1>
+<p>You can annotate function arguments, return types, and variables using the <code>typing</code> module.</p>
+<h2 id="functions">Functions</h2>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">1</span><span style="color: #CBA6F7;">def</span><span style="color: #89B4FA;font-style: italic;"> add</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">a</span><span style="color: #9399B2;">:</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> b</span><span style="color: #9399B2;">:</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #9399B2;">) -&gt;</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">2</span><span style="color: #CBA6F7;">    return</span><span> a</span><span style="color: #94E2D5;"> +</span><span> b</span></span></code></pre>
+<p>This means <code>a</code> and <code>b</code> are integers, and the function returns an integer.</p>
+<h2 id="variables">Variables</h2>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">1</span><span>x</span><span style="color: #9399B2;">:</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #94E2D5;"> =</span><span style="color: #FAB387;"> 10</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">2</span><span>y</span><span style="color: #9399B2;">:</span><span style="color: #CBA6F7;font-style: italic;"> str</span><span style="color: #94E2D5;"> =</span><span style="color: #A6E3A1;"> &quot;Python&quot;</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">3</span><span>names</span><span style="color: #9399B2;">:</span><span style="color: #EBA0AC;font-style: italic;"> list</span><span style="color: #9399B2;">[</span><span style="color: #CBA6F7;font-style: italic;">str</span><span style="color: #9399B2;">]</span><span style="color: #94E2D5;"> =</span><span style="color: #9399B2;"> [</span><span style="color: #A6E3A1;">&quot;Alice&quot;</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;Bob&quot;</span><span style="color: #9399B2;">]</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">4</span><span>scores</span><span style="color: #9399B2;">:</span><span style="color: #EBA0AC;font-style: italic;"> dict</span><span style="color: #9399B2;">[</span><span style="color: #CBA6F7;font-style: italic;">str</span><span style="color: #9399B2;">,</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #9399B2;">]</span><span style="color: #94E2D5;"> =</span><span style="color: #9399B2;"> {</span><span style="color: #A6E3A1;">&quot;Alice&quot;</span><span style="color: #9399B2;">:</span><span style="color: #FAB387;"> 90</span><span style="color: #9399B2;">,</span><span style="color: #A6E3A1;"> &quot;Bob&quot;</span><span style="color: #9399B2;">:</span><span style="color: #FAB387;"> 85</span><span style="color: #9399B2;">}</span></span></code></pre>
+<p>This tells readers and tools what types these variables are.</p>
+<h1 id="advanced-type-hinting">Advanced Type Hinting</h1>
+<h2 id="unions-and-optional-arguments">Unions and Optional Arguments</h2>
+<p>For more complex scenarios where multiple types are valid you can use the <code>|</code> operator:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">1</span><span style="color: #CBA6F7;">def</span><span style="color: #89B4FA;font-style: italic;"> add</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">a</span><span style="color: #9399B2;">:</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #94E2D5;"> |</span><span style="color: #CBA6F7;font-style: italic;"> float</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> b</span><span style="color: #9399B2;">:</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #94E2D5;"> |</span><span style="color: #CBA6F7;font-style: italic;"> float</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> c</span><span style="color: #9399B2;">:</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #94E2D5;"> |</span><span style="color: #CBA6F7;font-style: italic;"> float</span><span style="color: #94E2D5;"> |</span><span style="color: #FAB387;"> None</span><span style="color: #9399B2;">) -&gt;</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #94E2D5;"> |</span><span style="color: #CBA6F7;font-style: italic;"> float</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">2</span><span>    result</span><span style="color: #94E2D5;"> =</span><span> a</span><span style="color: #94E2D5;"> +</span><span> b</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">3</span><span style="color: #CBA6F7;">    if</span><span> c</span><span style="color: #CBA6F7;"> is not</span><span style="color: #FAB387;"> None</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">4</span><span>        result</span><span style="color: #94E2D5;"> +=</span><span> c</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">5</span><span style="color: #CBA6F7;">    return</span><span> result</span></span></code></pre>
+<p>This means <code>a</code> and <code>b</code> can be either <code>int</code> or <code>float</code> and <code>c</code> can be either <code>int</code>, <code>float</code>, or <code>None</code>.</p>
+<h2 id="new-types">New Types</h2>
+<p>You can also use <code>NewType</code> to define custom types:</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 1</span><span style="color: #CBA6F7;">from</span><span> typing</span><span style="color: #CBA6F7;"> import</span><span> NewType</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 2</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 3</span><span>Point</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;"> NewType</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;">&quot;Point&quot;</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> tuple</span><span style="color: #9399B2;">[</span><span style="color: #CBA6F7;font-style: italic;">int</span><span style="color: #9399B2;">,</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #9399B2;">])</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 4</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 5</span><span style="color: #CBA6F7;">def</span><span style="color: #89B4FA;font-style: italic;"> sum_points</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">p1</span><span style="color: #9399B2;">:</span><span style="color: #EBA0AC;"> Point</span><span style="color: #9399B2;">,</span><span style="color: #EBA0AC;font-style: italic;"> p2</span><span style="color: #9399B2;">:</span><span style="color: #EBA0AC;"> Point</span><span style="color: #9399B2;">) -&gt;</span><span> Point</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 6</span><span>    x1</span><span style="color: #9399B2;">,</span><span> y1</span><span style="color: #94E2D5;"> =</span><span> p1</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 7</span><span>    x2</span><span style="color: #9399B2;">,</span><span> y2</span><span style="color: #94E2D5;"> =</span><span> p2</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 8</span><span style="color: #CBA6F7;">    return</span><span style="color: #89B4FA;"> Point</span><span style="color: #9399B2;">((</span><span>x1</span><span style="color: #94E2D5;"> +</span><span> x2</span><span style="color: #9399B2;">,</span><span> y1</span><span style="color: #94E2D5;"> +</span><span> y2</span><span style="color: #9399B2;">))</span></span></code></pre>
+<p>This creates a custom type called <code>Point</code> that is a tuple of two integers.</p>
+<h2 id="using-abcs-from-collections-abc">Using ABCs from <code>collections.abc</code></h2>
+<p>The <code>collections.abc</code> module provides abstract base classes (ABCs) for common container types, enabling generic programming with consistent interfaces.</p>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 1</span><span style="color: #CBA6F7;">from</span><span> collections</span><span style="color: #9399B2;">.</span><span>abc</span><span style="color: #CBA6F7;"> import</span><span> Iterable</span><span style="color: #9399B2;">,</span><span> Callable</span><span style="color: #9399B2;">,</span><span> Generator</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 2</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 3</span><span style="color: #CBA6F7;">def</span><span style="color: #89B4FA;font-style: italic;"> process</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">iterable</span><span style="color: #9399B2;">:</span><span style="color: #EBA0AC;font-style: italic;"> Iterable</span><span style="color: #9399B2;">[</span><span style="color: #CBA6F7;font-style: italic;">int</span><span style="color: #9399B2;">]) -&gt;</span><span style="color: #FAB387;"> None</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 4</span><span style="color: #CBA6F7;">    for</span><span> item</span><span style="color: #CBA6F7;"> in</span><span> iterable</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 5</span><span style="color: #FAB387;font-style: italic;">        print</span><span style="color: #9399B2;">(</span><span>item</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 6</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 7</span><span style="color: #CBA6F7;">def</span><span style="color: #89B4FA;font-style: italic;"> apply</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">function</span><span style="color: #9399B2;">:</span><span style="color: #EBA0AC;font-style: italic;"> Callable</span><span style="color: #9399B2;">[[</span><span style="color: #CBA6F7;font-style: italic;">int</span><span style="color: #9399B2;">],</span><span style="color: #CBA6F7;font-style: italic;"> int</span><span style="color: #9399B2;">]) -&gt;</span><span style="color: #FAB387;"> None</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 8</span><span style="color: #CBA6F7;">    for</span><span> i</span><span style="color: #CBA6F7;"> in</span><span style="color: #FAB387;font-style: italic;"> range</span><span style="color: #9399B2;">(</span><span style="color: #FAB387;font-style: italic;">len</span><span style="color: #9399B2;">(</span><span>sequence</span><span style="color: #9399B2;">)):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;"> 9</span><span style="color: #EBA0AC;font-style: italic;">        sequence</span><span style="color: #9399B2;">[</span><span style="color: #EBA0AC;font-style: italic;">i</span><span style="color: #9399B2;">]</span><span style="color: #94E2D5;"> =</span><span style="color: #89B4FA;"> function</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">sequence</span><span style="color: #9399B2;">[</span><span style="color: #EBA0AC;font-style: italic;">i</span><span style="color: #9399B2;">])</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">10</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">11</span><span style="color: #CBA6F7;">def</span><span style="color: #89B4FA;font-style: italic;"> generate</span><span style="color: #9399B2;">() -&gt;</span><span style="color: #EBA0AC;font-style: italic;"> Generator</span><span style="color: #9399B2;">[</span><span style="color: #CBA6F7;font-style: italic;">int</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;font-style: italic;"> None</span><span style="color: #9399B2;">,</span><span style="color: #FAB387;font-style: italic;"> None</span><span style="color: #9399B2;">]:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">12</span><span style="color: #CBA6F7;">    for</span><span> i</span><span style="color: #CBA6F7;"> in</span><span style="color: #FAB387;font-style: italic;"> range</span><span style="color: #9399B2;">(</span><span style="color: #FAB387;">10</span><span style="color: #9399B2;">):</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">13</span><span style="color: #CBA6F7;">        yield</span><span> i</span></span></code></pre>
+<p>The <code>Generator[int, None, None]</code> type annotation specifies a generator that yields integers (<code>int</code>), does not accept any values to its <code>send()</code> method (<code>None</code>), and does not return a value upon completion (<code>None</code>).</p>
+<p>Similarly, <code>Callable[[int], int]</code> represents a callable (like a function) that takes a single integer as an argument (<code>int</code>) and returns an integer (<code>int</code>).</p>
+<p>For asynchronous programming, the <code>collections.abc</code> module also includes counterparts such as <code>Coroutine</code>, <code>AsyncGenerator</code> and <code>Awaitable</code>.</p>
+<p>Note: Avoid using <code>typing.Iterable</code>, <code>typing.Callable</code>, etc., as they are deprecated in favor of their <code>collections.abc</code> counterparts.</p>
+<blockquote>
+<p><a rel="noopener external" target="_blank" href="https://docs.python.org/3/library/typing.html#annotating-callable-objects">Functions – or other callable objects – can be annotated using collections.abc.Callable or deprecated typing.Callable.</a></p>
+</blockquote>
+<h1 id="conclusion">Conclusion</h1>
+<p>Type hinting is a powerful tool that improves code clarity, catches potential bugs early, and makes your codebase more maintainable. While it may seem like extra work at first, the long-term benefits, especially in larger or collaborative projects, are undeniable. By mastering the basics and exploring advanced techniques, you can write Python code that is not only functional but also robust and self-documenting.</p>
+<h1 id="references">References</h1>
+<p><a rel="noopener external" target="_blank" href="https://docs.python.org/3/library/typing.html">Support for type hints</a></p>
+<p><a rel="noopener external" target="_blank" href="https://docs.python.org/3/library/collections.abc.html">Abstract Base Classes for Containers</a></p>
+
+                </section>
+            </article>
+        </main>
+    </div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">
+        Table of Contents
+    </div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/typehints/#what-is-type-hinting">What is Type Hinting?</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/typehints/#why-use-type-hinting">Why Use Type Hinting?</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/typehints/#basics-of-type-hinting">Basics of Type Hinting</a>
+
+                
+                    <ul>
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/typehints/#functions">Functions</a>
+                            </li>
+
+                            
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/typehints/#variables">Variables</a>
+                            </li>
+
+                            
+                        
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/typehints/#advanced-type-hinting">Advanced Type Hinting</a>
+
+                
+                    <ul>
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/typehints/#unions-and-optional-arguments">Unions and Optional Arguments</a>
+                            </li>
+
+                            
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/typehints/#new-types">New Types</a>
+                            </li>
+
+                            
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/typehints/#using-abcs-from-collections-abc">Using ABCs from collections.abc</a>
+                            </li>
+
+                            
+                        
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/typehints/#conclusion">Conclusion</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/typehints/#references">References</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+        
+    </body>
+
+</html>

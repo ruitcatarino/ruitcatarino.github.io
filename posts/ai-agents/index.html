@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="base" content="https:&#x2F;&#x2F;ruitcatarino.github.io" />
+
+    
+
+    
+
+    
+    
+    
+        <title>
+            
+                My journey and thoughts on AI as a Software Engineer
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="My journey and thoughts on AI as a Software Engineer" />
+        
+    
+
+    
+        
+            <meta property="og:description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+        
+            <meta name="description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+    
+
+    
+    
+        <link href=https://ruitcatarino.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="https://ruitcatarino.github.io/js/imamu.js"
+                    data-website-id="3183e0b3-1313-480c-af61-0b3d30a7161a"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+
+        
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/codeblock.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/toc.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/note.js></script>
+    
+
+    
+
+    
+    
+
+
+    
+
+    
+    
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/dark.css" />
+    
+
+    
+        
+            <script>
+                var themeToggleMode = "toggle-auto";
+            </script>
+        
+        <script src=https://ruitcatarino.github.io/js/themetoggle.js></script>
+
+        
+            <script>
+                setTheme(getSavedTheme());
+            </script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://ruitcatarino.github.io/main.css" />
+
+    
+
+    <script defer
+                    src="https://ruitcatarino.github.io/search_index.en.js?h=c3cb8b9ac0096dbcda8e"></script>
+        <script defer
+                src="https://ruitcatarino.github.io/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script>
+</head>
+
+
+    <body>
+        
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io>CodeMemoirs</a>
+        
+
+
+        <div class="socials">
+            
+                
+            
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;github.com&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="github"
+                         src="https://ruitcatarino.github.io/icons/social/github.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;bsky.app&#x2F;profile&#x2F;ruitcatarino.bsky.social&#x2F;" class="social">
+                    <img alt="bluesky"
+                         src="https://ruitcatarino.github.io/icons/social/bluesky.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="linkedin"
+                         src="https://ruitcatarino.github.io/icons/social/linkedin.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;posts&#x2F;atom.xml" class="social">
+                    <img alt="rss"
+                         src="https://ruitcatarino.github.io/icons/social/rss.svg" />
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://ruitcatarino.github.io/posts style="margin-right: 0.5em">&#x2F;posts</a>
+        
+            <a href=https://ruitcatarino.github.io/tags style="margin-right: 0.5em">&#x2F;tags</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://ruitcatarino.github.io/icons/search.svg"
+                     alt="Search"
+                     class="search-icon" />
+            </button>
+
+            <div id="searchModal"
+                 class="search-modal js"
+                 role="dialog"
+                 aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">
+                        Search
+                    </h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                               role="combobox"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-expanded="false"
+                               aria-controls="results-container"
+                               placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+        
+            <a id="dark-mode-toggle"
+               onclick="toggleTheme(); event.preventDefault();"
+               href="#">
+                <img src="https://ruitcatarino.github.io/icons/sun.svg" id="sun-icon" alt="Light" />
+                <img src="https://ruitcatarino.github.io/icons/moon.svg"
+                     id="moon-icon"
+                     style="filter: invert(1)"
+                     alt="Dark" />
+                
+                    <img src="https://ruitcatarino.github.io/icons/auto.svg"
+                         id="auto-icon"
+                         style="filter: invert(1)"
+                         alt="Auto" />
+                
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>
+                updateItemToggleTheme()
+            </script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+    <div class="visible-element-observer-root" data-selector="main article p">
+        <main>
+            <article>
+                <div class="title">
+                    
+                    
+    
+        <div class="page-header">
+            My journey and thoughts on AI as a Software Engineer
+        </div>
+    
+
+
+                    <div class="meta">
+                        
+                            Posted on <time>2026-04-05</time>
+                        
+
+
+                        
+
+                        
+
+                        
+
+                        
+                        
+
+                        
+                        
+
+                        
+                        
+                            <span class="tags-label">::</span>
+                            <span class="tags">
+                                    <a href="https://ruitcatarino.github.io/tags/programming/"
+                                       class="post-tag">programming</a>
+                                
+                            </span>
+                        
+
+                        
+
+                    </div>
+                </div>
+
+                
+
+                <section class="body">
+                    <p>It's time we talk about it. AI is everywhere and while I'm just a random dude who codes for a living and lives on this planet in the cosmos we call Earth, aka a nobody, I still want to share my journey and thoughts on it.</p>
+<h2 id="how-it-started">How It Started</h2>
+<p>The first time I used AI at all was back in 2023 in a programming context. A Senior Engineer at the place I was working suggested we try Codeium (now called Windsurf). I gave it a try, and it was a game changer for me. I was only taking advantage of the code completion feature, but I remember feeling that this tool must somehow be inside my head because, 90% of the time, it suggested exactly what I wanted to write.</p>
+<p>Coding for me at the time resolved around typing some characters, the beginning of my logic, waiting to see if the AI would suggest what I was thinking about, and simply press TAB. This felt amazing, and I was super productive. The AI could write what I was thinking much faster than I ever could. I must admit I'm <del>a bit</del> lazy, which is, in my opinion, actually a great feature as a Software Engineer, but I'm side tracking here. Combine the laziness, with not having to physically write what I was thinking about, and develop faster, and you can see how, for me, this felt like the best of both worlds.</p>
+<p>This kept going for a while until one day...</p>
+<h2 id="the-realization">The Realization</h2>
+<p>At the end of 2023 I was working on a side project at home and Codeium was suffering an outage and right there I realized how dependent I was on AI autocompletion. I spent years coding without AI but at that moment I couldn't remember the syntax of anything, it's embarrassing to admit but I had to check the syntax of a simple python lambda function. On top of all that, I remember vividly just constantly stopping and waiting for AI to suggest something, to write the logic I was thinking for me. I felt afraid and thought that I lost my ability to code forever and for that reason I went cold turkey.</p>
+<p>It took only a couple of days to remove that annoying wait for AI suggestions completely and, thankfully, my coding skills were just rusty. After this incident, I was a bit afraid and reluctant to use AI again, but I eventually came back to using it, not in the same way, but these tools are just so powerful.</p>
+<h2 id="relapsing">Relapsing</h2>
+<p>I never enabled AI autocompletion again, but throughout 2024 and 2025 I used AI as a coding partner and a smart search engine. I discussed ideas, edge cases and architectural designs with it, used it to find alternatives/refactor the code I wrote, to navigate and understand unknown codebases, and to create tests and documentation for me. I never felt as productive as I was, I was able to do what I loved, coding, and having a partner in crime 24/7 at my side. But as coding agents improved and got "smarter", I began to allow them to write most of the code for me, and once again I was mainly reviewing code and not writing it myself.</p>
+<h2 id="the-present">The Present</h2>
+<p>Now in 2026, I basically use AI, mainly Claude Code, every day at work, but opposite to the feeling I got at the end of 2023, I actually think I found a good and healthy balance between myself and AI.</p>
+<p>At work, I use it to plan and discuss solutions for complex tasks, write code and tests, debug escalations, and documentation. With MCPs, better models, and now skills and sub agents, I feel like if you're not using them, you're missing out and not being as productive as you can. One thing to note is, I always review all the generated code deeply, since I know that I will always be solely responsible for the code and, in my view, you should never push something you don't understand. From my experience, AI is far from perfect, and I still have to fix, refactor or iterate on it the majority of the time, but it seems that it will always be and write faster than I ever will.</p>
+<p>For side projects, I try to use as little AI as possible and only for mundane and repetitive tasks do I rely on it. I feel like, since I don't have the need to be as productive as possible, I can scale down, simplify and really do what I want and enjoy the moment without any rush. I don't always need to be at full speed.</p>
+<h2 id="final-words">Final Words</h2>
+<p>What I think AI will never replace is my passion for understanding how something works and to dive deep into it. At worst, it will actually enable me to do it faster. I still think that scaling it down and not being fully dependent on it is super important. If, for some reason, AI is not available, we want to be able to get your own hands dirty.</p>
+<p>I'm seeing similar things happening around me, outside the Software Engineer bubble. My friends, family, and everyone else is using AI for everything. My takeaway is that AI is better than the average person in most of the fields, but worse than any specialist in said field.</p>
+<p>As funny as it seems, I chose and opted to not use any AI while writing this post about AI. Like I've been saying, I'm trying to scale down my usage of it whenever I can for all the reasons I mentioned above. I'm sure that AI will be here to stay and make the majority of people more productive, but for me, I sometimes enjoy the simplicity of just doing it myself.</p>
+
+                </section>
+            </article>
+        </main>
+    </div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">
+        Table of Contents
+    </div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/ai-agents/#how-it-started">How It Started</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/ai-agents/#the-realization">The Realization</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/ai-agents/#relapsing">Relapsing</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/ai-agents/#the-present">The Present</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/ai-agents/#final-words">Final Words</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+        
+    </body>
+
+</html>

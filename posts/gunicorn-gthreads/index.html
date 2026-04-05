@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" class="dark light">
+
+    <head>
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="base" content="https:&#x2F;&#x2F;ruitcatarino.github.io" />
+
+    
+
+    
+
+    
+    
+    
+        <title>
+            
+                TIL: Gunicorn&#x27;s gthread Worker Timeout Doesn&#x27;t Work as Expected
+            
+        </title>
+
+        
+            <meta property="og:title"
+                  content="TIL: Gunicorn&#x27;s gthread Worker Timeout Doesn&#x27;t Work as Expected" />
+        
+    
+
+    
+        
+            <meta property="og:description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+        
+            <meta name="description" content="A software engineer working as a backend developer who loves to code and learn new things." />
+        
+    
+
+    
+    
+
+    
+    
+        <link href=https://ruitcatarino.github.io/fonts.css rel="stylesheet" />
+    
+
+    
+    
+        
+            
+            
+
+            <script defer
+                    src="https://ruitcatarino.github.io/js/imamu.js"
+                    data-website-id="3183e0b3-1313-480c-af61-0b3d30a7161a"
+                    data-host-url="https:&#x2F;&#x2F;api-gateway.umami.dev&#x2F;"></script>
+        
+
+        
+
+        
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/codeblock.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/toc.js></script>
+    
+
+    
+    
+        <script defer src=https://ruitcatarino.github.io/js/note.js></script>
+    
+
+    
+
+    
+    
+
+
+    
+
+    
+    
+
+    
+    
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/light.css" />
+        <link id="darkModeStyle"
+              rel="stylesheet"
+              type="text/css"
+              href="https://ruitcatarino.github.io/theme/dark.css" />
+    
+
+    
+        
+            <script>
+                var themeToggleMode = "toggle-auto";
+            </script>
+        
+        <script src=https://ruitcatarino.github.io/js/themetoggle.js></script>
+
+        
+            <script>
+                setTheme(getSavedTheme());
+            </script>
+        
+    
+
+
+    <link rel="stylesheet"
+          type="text/css"
+          media="screen"
+          href="https://ruitcatarino.github.io/main.css" />
+
+    
+
+    <script defer
+                    src="https://ruitcatarino.github.io/search_index.en.js?h=c3cb8b9ac0096dbcda8e"></script>
+        <script defer
+                src="https://ruitcatarino.github.io/js/searchElasticlunr.min.js?h=3626c0ef99daa745b31e"></script>
+</head>
+
+
+    <body>
+        
+        <div class="left-content">
+            
+            
+        </div>
+
+        <div class="content">
+            <nav>
+    <div class="left-nav">
+        
+            <a href=https:&#x2F;&#x2F;ruitcatarino.github.io>CodeMemoirs</a>
+        
+
+
+        <div class="socials">
+            
+                
+            
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;github.com&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="github"
+                         src="https://ruitcatarino.github.io/icons/social/github.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;bsky.app&#x2F;profile&#x2F;ruitcatarino.bsky.social&#x2F;" class="social">
+                    <img alt="bluesky"
+                         src="https://ruitcatarino.github.io/icons/social/bluesky.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;ruitcatarino&#x2F;" class="social">
+                    <img alt="linkedin"
+                         src="https://ruitcatarino.github.io/icons/social/linkedin.svg" />
+                </a>
+            
+                <a rel='me noopener' target='_blank' href="https:&#x2F;&#x2F;ruitcatarino.github.io&#x2F;posts&#x2F;atom.xml" class="social">
+                    <img alt="rss"
+                         src="https://ruitcatarino.github.io/icons/social/rss.svg" />
+                </a>
+            
+        </div>
+    </div>
+
+    <div class="right-nav">
+        
+            <a href=https://ruitcatarino.github.io/posts style="margin-right: 0.5em">&#x2F;posts</a>
+        
+            <a href=https://ruitcatarino.github.io/tags style="margin-right: 0.5em">&#x2F;tags</a>
+        
+
+        
+            <button id="search-button"
+                    class="search-button"
+                    title="$SHORTCUT to open search">
+                <img src="https://ruitcatarino.github.io/icons/search.svg"
+                     alt="Search"
+                     class="search-icon" />
+            </button>
+
+            <div id="searchModal"
+                 class="search-modal js"
+                 role="dialog"
+                 aria-labelledby="modalTitle">
+                <div id="modal-content">
+                    <h1 id="modalTitle" class="page-header">
+                        Search
+                    </h1>
+                    <div id="searchBar">
+                        <input id="searchInput"
+                               role="combobox"
+                               autocomplete="off"
+                               spellcheck="false"
+                               aria-expanded="false"
+                               aria-controls="results-container"
+                               placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" title="Clear search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="results-container">
+                        <div id="results-info">
+                            <span id="zero_results" style="display: none;">No results</span>
+                            <span id="one_result" style="display: none;">1 result</span>
+                            <span id="many_results" style="display: none;">$NUMBER results</span>
+                        </div>
+                        <div id="results" role="listbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+        
+            <a id="dark-mode-toggle"
+               onclick="toggleTheme(); event.preventDefault();"
+               href="#">
+                <img src="https://ruitcatarino.github.io/icons/sun.svg" id="sun-icon" alt="Light" />
+                <img src="https://ruitcatarino.github.io/icons/moon.svg"
+                     id="moon-icon"
+                     style="filter: invert(1)"
+                     alt="Dark" />
+                
+                    <img src="https://ruitcatarino.github.io/icons/auto.svg"
+                         id="auto-icon"
+                         style="filter: invert(1)"
+                         alt="Auto" />
+                
+            </a>
+
+            <!-- Initialize the theme toggle icons -->
+            <script>
+                updateItemToggleTheme()
+            </script>
+        
+    </div>
+</nav>
+
+
+            
+            
+    
+    <div class="visible-element-observer-root" data-selector="main article p">
+        <main>
+            <article>
+                <div class="title">
+                    
+                    
+    
+        <div class="page-header">
+            TIL: Gunicorn&#x27;s gthread Worker Timeout Doesn&#x27;t Work as Expected
+        </div>
+    
+
+
+                    <div class="meta">
+                        
+                            Posted on <time>2025-03-06</time>
+                        
+
+
+                        
+
+                        
+
+                        
+
+                        
+                        
+
+                        
+                        
+
+                        
+                        
+                            <span class="tags-label">::</span>
+                            <span class="tags">
+                                    <a href="https://ruitcatarino.github.io/tags/til/"
+                                       class="post-tag">TIL</a>
+                                
+                                    <a href="https://ruitcatarino.github.io/tags/programming/"
+                                       class="post-tag">programming</a>
+                                
+                                    <a href="https://ruitcatarino.github.io/tags/python/"
+                                       class="post-tag">python</a>
+                                
+                            </span>
+                        
+
+                        
+
+                    </div>
+                </div>
+
+                
+
+                <section class="body">
+                    <p>When using Gunicorn to run our Django application in production, I had a simple assumption: setting a timeout value (or using the default 30-second timeout) would make sure that any request taking longer than that would be stopped. This is important for keeping the system stable and preventing resource problems.</p>
+<h1 id="the-unexpected-discovery">The Unexpected Discovery</h1>
+<p>While looking into issues in our system, I created a simple Django server similar to our application to test how it works.</p>
+<p>What I found was surprising: when using Gunicorn with the <code>gthread</code> worker class and testing a delayed response, the worker didn't stop after the expected 30-second timeout. Instead, it kept waiting for the response.</p>
+<hr />
+<p><em>Note: This behavior may change in future versions of Gunicorn. If you're reading this in the future, check the latest documentation and test the behavior in your system.</em></p>
+<h1 id="digging-deeper">Digging Deeper</h1>
+<p>After some research, I found <a rel="noopener external" target="_blank" href="https://github.com/benoitc/gunicorn/issues/2695">an existing issue</a> describing similar behavior. The key point: Gunicorn's timeout setting doesn't work as described in the docs when using the <code>gthread</code> worker class.</p>
+<h1 id="reproducing-the-issue">Reproducing the Issue</h1>
+<p>To show this behavior, I created a simple test:</p>
+<h3 id="dockerfile">Dockerfile</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="docker"><span class="giallo-l"><span style="color: #CBA6F7;">FROM</span><span> python:3.13-slim</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">WORKDIR</span><span> /app</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">COPY</span><span> requirements.txt .</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">RUN</span><span> pip install --no-cache-dir -r requirements.txt</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">COPY</span><span> . .</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">EXPOSE</span><span> 8080</span></span>
+<span class="giallo-l"><span style="color: #CBA6F7;">CMD</span><span> [</span><span style="color: #A6E3A1;">&quot;gunicorn&quot;</span><span>, </span><span style="color: #A6E3A1;">&quot;--bind&quot;</span><span>, </span><span style="color: #A6E3A1;">&quot;0.0.0.0:8080&quot;</span><span>, </span><span style="color: #A6E3A1;">&quot;project.wsgi:application&quot;</span><span>, </span><span style="color: #A6E3A1;">&quot;-k&quot;</span><span>, </span><span style="color: #A6E3A1;">&quot;gthread&quot;</span><span>, </span><span style="color: #A6E3A1;">&quot;-t&quot;</span><span>, </span><span style="color: #A6E3A1;">&quot;30&quot;</span><span>]</span></span></code></pre><h3 id="a-simple-view-that-sleeps">A Simple View That Sleeps</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="python"><span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">1</span><span style="color: #CBA6F7;">def</span><span style="color: #89B4FA;font-style: italic;"> long_sleep</span><span style="color: #9399B2;">(</span><span style="color: #EBA0AC;font-style: italic;">request</span><span style="color: #9399B2;">) -&gt;</span><span> HttpResponseBase</span><span style="color: #9399B2;">:</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">2</span><span>    logger</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">info</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;font-style: italic;">f</span><span style="color: #A6E3A1;">&quot;Going to sleep!&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">3</span><span>    time</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">sleep</span><span style="color: #9399B2;">(</span><span style="color: #FAB387;">30</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">4</span><span>    logger</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">info</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;font-style: italic;">f</span><span style="color: #A6E3A1;">&quot;30 seconds passed! Am I still alive?&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">5</span><span>    time</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">sleep</span><span style="color: #9399B2;">(</span><span style="color: #FAB387;">30</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">6</span><span>    logger</span><span style="color: #9399B2;">.</span><span style="color: #89B4FA;">info</span><span style="color: #9399B2;">(</span><span style="color: #A6E3A1;font-style: italic;">f</span><span style="color: #A6E3A1;">&quot;Isn&#39;t my timeout suposed to kill me? Weird...&quot;</span><span style="color: #9399B2;">)</span></span>
+<span class="giallo-l"><span aria-hidden="true" class="giallo-ln" style="color: #7F849C;">7</span><span style="color: #CBA6F7;">    return</span><span style="color: #89B4FA;"> JsonResponse</span><span style="color: #9399B2;">({</span><span style="color: #A6E3A1;">&quot;message&quot;</span><span style="color: #9399B2;">:</span><span style="color: #A6E3A1;"> &quot;ok&quot;</span><span style="color: #9399B2;">})</span></span></code></pre><h3 id="server-logs">Server Logs</h3>
+<pre class="giallo" style="color: #CDD6F4; background-color: #1E1E2E;"><code data-lang="plain"><span class="giallo-l"><span>server-1  | [2025-03-06 14:26:06 +0000] [1] [INFO] Starting gunicorn 23.0.0</span></span>
+<span class="giallo-l"><span>server-1  | [2025-03-06 14:26:06 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)</span></span>
+<span class="giallo-l"><span>server-1  | [2025-03-06 14:26:06 +0000] [1] [INFO] Using worker: gthread</span></span>
+<span class="giallo-l"><span>server-1  | [2025-03-06 14:26:06 +0000] [7] [INFO] Booting worker with pid: 7</span></span>
+<span class="giallo-l"><span>server-1  | INFO 2025-03-06 14:26:10,175: Going to sleep!</span></span>
+<span class="giallo-l"><span>server-1  | INFO 2025-03-06 14:26:40,176: 30 seconds passed! Am I still alive?</span></span>
+<span class="giallo-l"><span>server-1  | INFO 2025-03-06 14:27:10,176: Isn&#39;t my timeout suposed to kill me? Weird...</span></span></code></pre>
+<p>The worker simply kept running without any timeout, which goes against what the <a rel="noopener external" target="_blank" href="https://docs.gunicorn.org/en/stable/settings.html#timeout">Gunicorn's documentation</a> says:</p>
+<blockquote>
+<p>Workers silent for more than this many seconds are killed and restarted.</p>
+<p>Default: 30</p>
+</blockquote>
+<h1 id="conclusion">Conclusion</h1>
+<p>If you're using Gunicorn with the <code>gthread</code> worker in production, I strongly suggest testing your timeout behavior to make sure it works as you expect.</p>
+<h1 id="references">References</h1>
+<p><a rel="noopener external" target="_blank" href="https://docs.gunicorn.org/en/stable/settings.html">Gunicorn's documentation</a></p>
+
+                </section>
+            </article>
+        </main>
+    </div>
+
+
+
+            
+                
+            
+
+            
+        </div>
+
+        <div class="right-content">
+            
+    
+    
+        <div class="toc">
+    <div class="heading">
+        Table of Contents
+    </div>
+    <ul class="toc-list">
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/gunicorn-gthreads/#the-unexpected-discovery">The Unexpected Discovery</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/gunicorn-gthreads/#digging-deeper">Digging Deeper</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/gunicorn-gthreads/#reproducing-the-issue">Reproducing the Issue</a>
+
+                
+                    <ul>
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/gunicorn-gthreads/#dockerfile">Dockerfile</a>
+                            </li>
+
+                            
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/gunicorn-gthreads/#a-simple-view-that-sleeps">A Simple View That Sleeps</a>
+                            </li>
+
+                            
+                        
+                            
+                            <li>
+                                <a href="https://ruitcatarino.github.io/posts/gunicorn-gthreads/#server-logs">Server Logs</a>
+                            </li>
+
+                            
+                        
+                    </ul>
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/gunicorn-gthreads/#conclusion">Conclusion</a>
+
+                
+            </li>
+        
+            <li class="parent">
+                
+                <a href="https://ruitcatarino.github.io/posts/gunicorn-gthreads/#references">References</a>
+
+                
+            </li>
+        
+    </ul>
+</div>
+
+    
+
+        </div>
+        
+    </body>
+
+</html>
