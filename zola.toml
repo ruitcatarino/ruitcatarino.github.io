@@ -22,6 +22,7 @@ socials = [
   { name = "github", url = "https://github.com/ruitcatarino/", icon = "github" },
   { name = "bluesky", url = "https://bsky.app/profile/ruitcatarino.bsky.social/", icon = "bluesky" },
   { name = "linkedin", url = "https://www.linkedin.com/in/ruitcatarino/", icon = "linkedin" },
+  { name = "rss", url = "https://ruitcatarino.github.io/posts/atom.xml", icon = "rss" },
 ]
 menu = [
     { name = "/posts", url = "/posts", weight = 1 },
