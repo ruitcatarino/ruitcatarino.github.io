@@ -4,7 +4,8 @@ date = 2024-12-29
 
 [taxonomies]
 tags = [
-    "python"
+    "python",
+    "programming"
 ]
 +++
 

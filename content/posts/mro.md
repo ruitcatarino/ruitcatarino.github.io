@@ -6,6 +6,7 @@ date = 2024-09-21
 tags = [
     "python",
     "algorithms",
+    "programming"
 ]
 +++
 
