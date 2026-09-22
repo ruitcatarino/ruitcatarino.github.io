@@ -34,3 +34,11 @@ enabled = true
 
 [extra.analytics.umami]
 website_id = "3183e0b3-1313-480c-af61-0b3d30a7161a"
+
+# Unused, but the theme reads these fields unguarded and Tera 2 errors on
+# undefined fields. Empty strings are falsy, so the scripts stay disabled.
+[extra.analytics.goatcounter]
+user = ""
+
+[extra.analytics.google]
+tracking_id = ""
