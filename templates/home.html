@@ -4,9 +4,7 @@
 <main>
     <article>
         <section class="body">
-            {% if section.title %}
-                {{<post.page_header title={section.title} />}}
-            {% endif %}
+            <post.page_header title={section.title} />
             {{ section.content | safe }}
         </section>
     </article>
