@@ -23,9 +23,9 @@ Think of it like this: if a server is waiting for data from one client, it can s
 
 At its core, `asyncio` allows you to define asynchronous tasks using `async def` functions. These tasks are then scheduled and run on an event loop. Here's a breakdown of key concepts:
 
-*   **Event Loop**: The heart of `asyncio`, which handles all the asynchronous operations. It runs tasks and schedules them in an efficient, non-blocking manner.
-*   **Coroutines**: Functions defined with `async def`, which return an "awaitable" object when called. These are the building blocks of asynchronous code.
-*   **Tasks**: Instances of coroutines that are scheduled to run in the event loop.
+- **Event Loop**: The heart of `asyncio`, which handles all the asynchronous operations. It runs tasks and schedules them in an efficient, non-blocking manner.
+- **Coroutines**: Functions defined with `async def`, which return an "awaitable" object when called. These are the building blocks of asynchronous code.
+- **Tasks**: Instances of coroutines that are scheduled to run in the event loop.
 
 Here’s an example of a basic `asyncio` program:
 
@@ -42,7 +42,7 @@ async def main():
     task1 = asyncio.create_task(greet("Rui"))
     task2 = asyncio.create_task(greet("Teixeira"))
     task3 = asyncio.create_task(greet("Catarino"))
-    
+
     # Await all tasks to complete
     await task1
     await task2
@@ -85,7 +85,7 @@ async def main():
     task1 = asyncio.create_task(greet("Rui"))
     task2 = asyncio.create_task(greet("Teixeira"))
     task3 = asyncio.create_task(greet("Catarino"))
-    
+
     results = await asyncio.gather(task1, task2, task3)
     print(results)
 
