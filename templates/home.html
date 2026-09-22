@@ -1,23 +1,26 @@
-{% extends "base.html" %} {% component home_page(section: map) %}
+{% extends "base.html" %}
+
+{% component home_page(section: map) %}
 <main>
     <article>
         <section class="body">
-            {% if section.title %} {{<post.page_header
-                title="{section.title}"
-            />}} {% endif %} {{ section.content | safe }}
+            {% if section.title %}
+                {{<post.page_header title={section.title} />}}
+            {% endif %}
+            {{ section.content | safe }}
         </section>
     </article>
 </main>
-{% endcomponent home_page %} {% block main_content %} {{<home_page
-    section="{section}"
-/>}}
+{% endcomponent home_page %}
 
-<h1>Recent posts</h1>
-<main class="post-list">
-    {% set posts = get_section(path="posts/_index.md") %} {{<post.list_posts
-        pages="{posts.pages[:10]}"
-    />}}
-</main>
+{% block main_content %}
+    {{<home_page section={section} />}}
 
-<a href="/posts" class="read-more-button">Read More</a>
+    <h1>Recent posts</h1>
+    <main class="post-list">
+        {% set posts = get_section(path="posts/_index.md") %}
+        {{<post.list_posts pages={posts.pages[:10]} />}}
+    </main>
+
+    <a href="/posts" class="read-more-button">Read More</a>
 {% endblock main_content %}
