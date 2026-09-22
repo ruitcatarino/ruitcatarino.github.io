@@ -50,3 +50,5 @@ As funny as it seems, I chose and opted to not use any AI while writing this pos
 {% <character position="left"> %}But this way I won't be thinking or learning.{% </character> %}
 
 {% <character name="AI" image="pc.png" position="right"> %}But you'll reach your solution faster :D{% </character> %}
+
+{% <character position="left"> %}...{% </character> %}
