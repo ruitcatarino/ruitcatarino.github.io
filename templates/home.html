@@ -14,8 +14,9 @@
 
 <h1>Recent posts</h1>
 <main class="post-list">
-    {% set posts = get_section(path="posts/_index.md") %} {% set recent =
-    posts.pages | slice(end=10) %} {{<post.list_posts pages="{recent}" />}}
+    {% set posts = get_section(path="posts/_index.md") %} {{<post.list_posts
+        pages="{posts.pages[:10]}"
+    />}}
 </main>
 
 <a href="/posts" class="read-more-button">Read More</a>
