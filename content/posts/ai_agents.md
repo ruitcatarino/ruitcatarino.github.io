@@ -44,3 +44,9 @@ What I think AI will never replace is my passion for understanding how something
 I'm seeing similar things happening around me, outside the Software Engineer bubble. My friends, family, and everyone else is using AI for everything. My takeaway is that AI is better than the average person in most of the fields, but worse than any specialist in said field.
 
 As funny as it seems, I chose and opted to not use any AI while writing this post about AI. Like I've been saying, I'm trying to scale down my usage of it whenever I can for all the reasons I mentioned above. I'm sure that AI will be here to stay and make the majority of people more productive, but for me, I sometimes enjoy the simplicity of just doing it myself.
+
+{% <character name="AI" image="pc.png" position="right"> %}Here is the solution!{% </character> %}
+
+{% <character position="left"> %}But this way I won't be thinking or learning.{% </character> %}
+
+{% <character name="AI" image="pc.png" position="right"> %}But you'll reach your solution faster :D{% </character> %}
