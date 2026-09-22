@@ -1,5 +1,4 @@
 +++
-title = "Hello World"
 template = "home.html"
 +++
 
