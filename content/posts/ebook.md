@@ -16,3 +16,4 @@ Reading emotion make our brain know how it feels
 Emotions, sleep privation just to read
 
 ![Kobo](/images/ebook/kobo.jpeg)
+<center><img src="/images/ebook/kobo.jpeg" alt="Kobo" width="400"></center>
