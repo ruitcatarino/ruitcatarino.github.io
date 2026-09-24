@@ -47,16 +47,13 @@ The big problem faced with the hearing option is exactly what happens in the Tel
 
 I'm not gonna hide it or lie but while reading *The Sword of Kaigen* by M.L. Wang I cried. I'm not gonna share spoilers but there is an intense emotional part on the book that brought tears down my cheeks. I never lived that moment but just by reading it I can resent with it. Same things happened in other books, I have felt excited, angry, sad, hopeful, tense, and many other emotions while reading. My point is that reading made me more empathic. I didn't need to live or experience it myself, I was being fully transported into the story and world described and feeling like I've had really lived it.
 
-# How and What Should I Read
+## Books Are Awesome
 
-I read mainly on my Kobo and with physical books.
-<center><img src="/images/reading/kobo.jpeg" alt="Kobo Libra Colour" width="300"></center>
+You get to expand our vocabulary, enter the head and thoughts of another person/character, live experiences and feeling that you might otherwise never experienced and even in fiction we can learn and grow as individuals. In summary books are just that awesome.
 
-TODO
+# Closing Words
 
-# Summary
-
-In summary I think that everyone should start reading even if it is just 5 minutes per day. There are so many books out there I'm sure you'll find one that you'll love and impacts your life. I know that for me it did have a huge positive impact on my life. TODO
+Some final words to finish this post of mine, I think that everyone should start reading even if it is just 5 minutes per day. It's a great mental exercise. There are so many books out there I'm sure you'll find one that you'll love and impacts your life. I know that for me it did have a huge positive impact on my life.
 
 I will leave you with these beautiful words that I think describe a book perfectly.
 
