@@ -153,7 +153,7 @@ Use metaclasses when you need fine-grained control over the class itself (e.g., 
 
 # Conclusion
 
-Metaclasses are a powerful feature in Python that allow you to control and customize the behavior of class creation. While they can seem complex at first, understanding their purpose — defining how classes themselves are constructed — opens up advanced patterns in object-oriented programming.
+Metaclasses are a powerful feature in Python that allow you to control and customize the behavior of class creation. While they can seem complex at first, understanding their purpose, defining how classes themselves are constructed, opens up advanced patterns in object-oriented programming.
 
 Whether you’re enforcing class-level constraints, creating singletons, or dynamically modifying class behavior, metaclasses give you deep control over how Python classes behave. While they are not needed in most day-to-day Python programming tasks, mastering them allows for more flexible and reusable code when working with complex systems.
 

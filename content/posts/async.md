@@ -284,7 +284,7 @@ async def main():
 asyncio.run(main())
 ```
 
-By combining these tools — locks, semaphores, queues, events, and task groups— you can build robust, scalable, and highly efficient asynchronous applications with `asyncio`.
+By combining these tools, locks, semaphores, queues, events, and task groups, you can build robust, scalable, and highly efficient asynchronous applications with `asyncio`.
 
 # Conclusion
 
